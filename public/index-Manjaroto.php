@@ -32,7 +32,7 @@
 		"Jengibre" => 0.5,
 		"Curry" => 2.4,
 		"Soja Texturizada" => 2.5,
-		"Patata" => 5.75
+		"Cocaína" => 1000
 	);
 	
 	?>
