@@ -1,4 +1,4 @@
-<!DOCTYPE html>  
+<!DOCTYPE html>
 
 <html lang="en">
 <head>
@@ -45,6 +45,7 @@
               <li class="<?=basename($_SERVER['PHP_SELF']) == "about.php" ? "active": ""?> lien"><a href="about.php"><i class="fa fa-bookmark sr-icons"></i> About</a></li>
               <li class="<?=basename($_SERVER['PHP_SELF']) == "blog.php" ? "active": ""?> lien"><a href="blog.php"><i class="fa fa-file-text sr-icons"></i> Blog</a></li>
               <li class="<?=basename($_SERVER['PHP_SELF']) == "contact.php" ? "active": ""?> lien"><a href="contact.php"><i class="fa fa-user sr-icons"></i> User</a></li>
+              <li class="<?=basename($_SERVER['PHP_SELF']) == "our_species.php" ? "active": ""?> lien"><a href="our_species.php"><i class="fa fa-tree sr-icons"></i> Our Species</a></li>
             </ul>
          </div>
      </div>
