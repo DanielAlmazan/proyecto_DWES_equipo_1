@@ -11,7 +11,7 @@
         private bool $newsletterSubscription;
 
         public function __construct(int $id, string $name, string $surnames, string $email,
-            string $nickName, string $password, string $avatar, bool $newsletterSubscription) {
+            string $nickName, string $password, string $avatar) {
             $this->id = $id;
             $this->name = $name;
             $this->surnames = $surnames;
@@ -27,31 +27,25 @@
             switch($field){
                 case "id":
                     return $this->id;
-                    break;
+                    // break; Unreachable statment, we remove all breaks
                 case "name":
                     return $this->name;
-                    break;
                 case "surnames":
                     return $this->surnames;
-                    break;
                 case "email":
                     return $this->email;
-                    break;
                 case "nickName":
                     return $this->nickName;
-                    break;
                 case "password":
                     return $this->password;
-                    break;
                 case "karma":
                     return $this->karma;
-                    break;
                 case "avatar":
                     return $this->avatar;
-                    break;
                 case "newsletterSubscription":
                     return $this->newsletterSubscription;
-                    break;
+                default:
+                    return "Error"; // We need to implement Exceptions
             }
         }
 
@@ -81,6 +75,9 @@
                 case "newsletterSubscription":
                     $this->newsletterSubscription = $value;
                     break;
+                default:
+                    return "Error"; // We need to implement Exceptions
+                    // break; Unreachable statment
             }
         }
     }

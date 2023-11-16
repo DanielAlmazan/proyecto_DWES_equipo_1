@@ -1,10 +1,10 @@
 <?php
     class Admin extends User {
-        public confirmEvent() {
+        public function confirmEvent() {
             // TO-DO
         }
 
-        public addSpecie() {
+        public function addSpecie() {
             // TO-DO
         }
     }
