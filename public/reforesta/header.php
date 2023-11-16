@@ -5,7 +5,7 @@
         "blog.php" => "Blog",
         "contact.php" => "Contact",
         "our_species.php" => "Our Species",
-        "trophies.php" => "Trophies"
+        "achievements.php" => "Achievements"
     );
     $fileName = basename($_SERVER["PHP_SELF"]);
 ?>
@@ -59,7 +59,7 @@
               <li class="<?=basename($_SERVER['PHP_SELF']) == "blog.php" ? "active": ""?> lien"><a href="blog.php"><i class="fa fa-file-text sr-icons"></i> Blog</a></li>
               <li class="<?=basename($_SERVER['PHP_SELF']) == "contact.php" ? "active": ""?> lien"><a href="contact.php"><i class="fa fa-phone sr-icons"></i> Contact</a></li>
               <li class="<?=basename($_SERVER['PHP_SELF']) == "our_species.php" ? "active": ""?> lien"><a href="our_species.php"><i class="fa fa-tree sr-icons"></i> Our Species</a></li>
-              <li class="<?=basename($_SERVER['PHP_SELF']) == "trophies.php" ? "active": ""?> lien"><a href="trophies.php"><i class="fa fa-trophy sr-icons"></i> Trophies</a></li>
+              <li class="<?=basename($_SERVER['PHP_SELF']) == "achievements.php" ? "active": ""?> lien"><a href="achievements.php"><i class="fa fa-trophy sr-icons"></i> Trophies</a></li>
             </ul>
          </div>
      </div>
