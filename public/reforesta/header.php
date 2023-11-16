@@ -1,3 +1,15 @@
+<?php
+    $fileNamesAndTitles = array(
+        "index.php" => "Home",
+        "about.php" => "About",
+        "blog.php" => "Blog",
+        "contact.php" => "Contact",
+        "our_species.php" => "Our Species",
+        "trophies.php" => "Trophies"
+    );
+    $fileName = basename($_SERVER["PHP_SELF"]);
+?>
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -5,7 +17,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	  <title>PhotographItem-Responsive Theme</title>
+	  <title><?=$fileNamesAndTitles[$fileName]?></title>
 
   	<!-- Bootstrap core css -->
   	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
@@ -42,10 +54,12 @@
          <div class="collapse navbar-collapse navbar-right" id="menu">
             <ul class="nav navbar-nav">
               <li class="<?=basename($_SERVER['PHP_SELF']) == "index.php" ? "active": ""?> lien"><a href="index.php"><i class="fa fa-home sr-icons"></i> Home</a></li>
+              <li class="<?=basename($_SERVER['PHP_SELF']) == "user.php" ? "active": ""?> lien"><a href="index.php"><i class="fa fa-user sr-icons"></i> User</a></li>
               <li class="<?=basename($_SERVER['PHP_SELF']) == "about.php" ? "active": ""?> lien"><a href="about.php"><i class="fa fa-bookmark sr-icons"></i> About</a></li>
               <li class="<?=basename($_SERVER['PHP_SELF']) == "blog.php" ? "active": ""?> lien"><a href="blog.php"><i class="fa fa-file-text sr-icons"></i> Blog</a></li>
-              <li class="<?=basename($_SERVER['PHP_SELF']) == "contact.php" ? "active": ""?> lien"><a href="contact.php"><i class="fa fa-user sr-icons"></i> User</a></li>
+              <li class="<?=basename($_SERVER['PHP_SELF']) == "contact.php" ? "active": ""?> lien"><a href="contact.php"><i class="fa fa-phone sr-icons"></i> Contact</a></li>
               <li class="<?=basename($_SERVER['PHP_SELF']) == "our_species.php" ? "active": ""?> lien"><a href="our_species.php"><i class="fa fa-tree sr-icons"></i> Our Species</a></li>
+              <li class="<?=basename($_SERVER['PHP_SELF']) == "trophies.php" ? "active": ""?> lien"><a href="trophies.php"><i class="fa fa-trophy sr-icons"></i> Trophies</a></li>
             </ul>
          </div>
      </div>
