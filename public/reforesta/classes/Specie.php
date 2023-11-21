@@ -8,13 +8,15 @@ class Specie
     private string $climate;
     private string $region;
     private int $daysToGrow;
-    private array $benefits=array();
+    private array $benefits;
     private string $picture;
     private string $url;
 
     public function __construct(
-        int $id, string $scientificName,
-        string $commonName, string $climate,
+        int $id,
+        string $scientificName,
+        string $commonName,
+        string $climate,
         string $region,
         int $daysToGrow,
         array $benefits,
@@ -32,51 +34,30 @@ class Specie
         $this->url = $url;
     }
 
-    public function getId(): int
-    {
-        return $this->id;
+    public function __get(string $field){
+        switch ($field){
+            case "id":
+                return $this->id;
+            case "scientificName":
+                return $this->scientificName;
+            case "commonName":
+                return $this->commonName;
+            case "climate":
+                return $this->climate;
+            case "region":
+                return $this->region;
+            case "daysToGrow":
+                return $this->daysToGrow;
+            case "benefits":
+                return $this->benefits;
+            case "picture":
+                return $this->picture;
+            case "url":
+                return $this->url;
+            default:
+                return "Error";
+        }
     }
-
-    public function getScientificName(): string
-    {
-        return $this->scientificName;
-    }
-
-    public function getCommonName(): string
-    {
-        return $this->commonName;
-    }
-
-    public function getClimate(): string
-    {
-        return $this->climate;
-    }
-
-    public function getRegion(): string
-    {
-        return $this->region;
-    }
-
-    public function getDaysToGrow(): int
-    {
-        return $this->daysToGrow;
-    }
-
-    public function getBenefits(): array
-    {
-        return $this->benefits;
-    }
-
-    public function getPicture(): string
-    {
-        return $this->picture;
-    }
-
-    public function getUrl(): string
-    {
-        return $this->url;
-    }
-
 
 
 }
