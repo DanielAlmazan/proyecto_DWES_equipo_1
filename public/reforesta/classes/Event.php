@@ -35,61 +35,81 @@
             $this->approved = false;
         }
 
-        public function __get(string $property) {
-            switch($property) {
-                case "id":
-                    return $this->id;
-                case "description":
-                    return $this->description;
-                case "province":
-                    return $this->province;
-                case "locality":
-                    return $this->locality;
-                case "terrainType":
-                    return $this->terrainType;
-                case "date":
-                    return $this->date;
-                case "type":
-                    return $this->type;
-                /*
-                TODO: Add getters for 'host', 'attendees' and 'species' once their respective
-                classes are finished
-                */
-                case "bannerPicture":
-                    return $this->bannerPicture;
-                case "pending":
-                    return $this->pending;
-                case "approved":
-                    return $this->approved;
-            }
+        public function getId(): int {
+            return $this->id;
         }
 
-        public function __set(string $property, $value) {
-            switch($property) {
-                case "description":
-                    if (strlen($value) <= 2000) {
-                        $this->description = $value;
-                    } else if (strlen($value) == 0) {
-                        $this->description = "No description for this event.";
-                    }
-                    break;
-                case "date":
-                    if (gettype($value) == "DateTime" && $value > new DateTime()) {
-                        $this->date = $value;
-                    }
-                    break;
-                case "bannerPicture":
-                    if (getimagesize($value)) {
-                        $this->bannerPicture = $value;
-                    }
-                    break;
-                case "pending":
-                    $this->pending = $value;
-                    break;
-                case "approved":
-                    $this->approved = $value;
-                    break;
-            }
+        public function getDescription(): string {
+            return $this->description;
+        }
+
+        public function setDescription(string $description): void {
+            $this->description = $description;
+        }
+
+        public function getProvince(): string {
+            return $this->province;
+        }
+
+        public function setProvince(string $province): void {
+            $this->province = $province;
+        }
+
+        public function getLocality(): string {
+            return $this->locality;
+        }
+
+        public function setLocality(string $locality): void {
+            $this->locality = $locality;
+        }
+
+        public function getTerrainType(): string {
+            return $this->terrainType;
+        }
+
+        public function setTerrainType(string $terrainType): void {
+            $this->terrainType = $terrainType;
+        }
+
+        public function getDate(): DateTime {
+            return $this->date;
+        }
+
+        public function setDate(DateTime $date): void {
+            $this->date = $date;
+        }
+
+        public function getType(): string {
+            return $this->type;
+        }
+
+        public function setType(string $type): void {
+            $this->type = $type;
+        }
+
+        public function getBannerPicture(): string {
+            return $this->bannerPicture;
+        }
+
+        public function setBannerPicture(string $bannerPicture): void {
+            $this->bannerPicture = $bannerPicture;
+        }
+
+        public function isPending(): bool {
+            return $this->pending;
+        }
+
+        public function setPending(bool $pending): void {
+            $this->pending = $pending;
+        }
+
+        public function isApproved(): bool {
+            return $this->approved;
+        }
+
+        public function setApproved(bool $approved): void {
+            $this->approved = $approved;
         }
     }
+
 ?>

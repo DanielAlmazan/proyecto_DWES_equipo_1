@@ -23,62 +23,72 @@
             $this->newsletterSubscription = false;
         }
 
-        public function __get(string $field) {
-            switch($field){
-                case "id":
-                    return $this->id;
-                    // break; Unreachable statment, we remove all breaks
-                case "name":
-                    return $this->name;
-                case "surnames":
-                    return $this->surnames;
-                case "email":
-                    return $this->email;
-                case "nickName":
-                    return $this->nickName;
-                case "password":
-                    return $this->password;
-                case "karma":
-                    return $this->karma;
-                case "avatar":
-                    return $this->avatar;
-                case "newsletterSubscription":
-                    return $this->newsletterSubscription;
-                default:
-                    return "Error"; // We need to implement Exceptions
-            }
-        }
+	    public function getId(): int {
+		    return $this->id;
+	    }
 
-        public function __set(string $field, $value) {
-            switch($field){
-                case "name":
-                    $this->name = $value . "";
-                    break;
-                case "surnames":
-                    $this->surnames = $value . "";
-                    break;
-                case "email":
-                    $this->email = $value . "";
-                    break;
-                case "nickName":
-                    $this->nickName = $value . "";
-                    break;
-                case "password":
-                    $this->password = $value . "";
-                    break;
-                case "karma":
-                    $this->karma = +$value;
-                    break;
-                case "avatar":
-                    $this->avatar = $value . "";
-                    break;
-                case "newsletterSubscription":
-                    $this->newsletterSubscription = $value;
-                    break;
-                default:
-                    return "Error"; // We need to implement Exceptions
-                    // break; Unreachable statment
-            }
-        }
+	    public function getName(): string {
+		    return $this->name;
+	    }
+
+	    public function setName(string $name): void {
+		    $this->name = $name;
+	    }
+	    
+	    public function getSurnames(): string {
+		    return $this->surnames;
+	    }
+
+	    public function setSurnames(string $surnames): void {
+		    $this->surnames = $surnames;
+	    }
+
+	    public function getEmail(): string {
+		    return $this->email;
+	    }
+
+	    public function setEmail(string $email): void {
+		    $this->email = $email;
+	    }
+
+	    public function getNickName(): string {
+		    return $this->nickName;
+	    }
+
+	    public function setNickName(string $nickName): void {
+		    $this->nickName = $nickName;
+	    }
+
+	    public function getPassword(): string {
+		    return $this->password;
+	    }
+
+	    public function setPassword(string $password): void {
+		    $this->password = $password;
+	    }
+
+	    public function getKarma(): int {
+		    return $this->karma;
+	    }
+
+	    public function setKarma(int $karma): void {
+		    $this->karma = $karma;
+	    }
+
+	    public function getAvatar(): string {
+		    return $this->avatar;
+	    }
+
+	    public function setAvatar(string $avatar): void {
+		    $this->avatar = $avatar;
+	    }
+
+	    public function isNewsletterSubscription(): bool {
+		    return $this->newsletterSubscription;
+	    }
+
+	    public function setNewsletterSubscription(bool $newsletterSubscription): void {
+		    $this->newsletterSubscription = $newsletterSubscription;
+	    }
     }
 ?>
