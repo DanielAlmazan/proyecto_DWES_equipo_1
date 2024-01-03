@@ -12,7 +12,7 @@
          <div class="col-xs-12 intro">
             <div class="carousel-inner">
                <div class="item active">
-                <img class="img-responsive" src="images/index/woman.jpg" alt="header picture">
+                <img class="img-responsive" src="res/images/index/woman.jpg" alt="header picture">
                </div>
             </div>
          </div>
