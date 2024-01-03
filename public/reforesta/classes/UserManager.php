@@ -12,6 +12,7 @@
             if ($field == "currentUser" && isset($this->currentUser)) {
                 return $this->currentUser;
             }
+            // TODO: Throw exception or something
         }
 
         public function logIn(User $user) {
