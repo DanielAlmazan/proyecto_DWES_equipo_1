@@ -54,7 +54,7 @@
     <!-- Magnific-popup css -->
     <link rel="stylesheet" type="text/css" href="css/magnific-popup.css">
     <!-- Font Awesome icons -->
-    <link rel="stylesheet" type="text/css" href="font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="res/font-awesome/css/font-awesome.min.css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -76,7 +76,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand page-scroll" href="index.php">
-                <img src="images/logo/logo.JPG" alt="logo">
+                <img src="res/images/logo/logo.JPG" alt="logo">
             </a>
         </div>
         <div class="collapse navbar-collapse navbar-right" id="menu">
