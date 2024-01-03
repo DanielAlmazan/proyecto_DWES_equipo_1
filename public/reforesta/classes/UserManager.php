@@ -23,8 +23,9 @@
         }
 
         public function addKarmaPoints(int $value) {
-            if(isset($this->currentUser))
-                $this->currentUser->karma += $value;
+            if (isset($this->currentUser)) {
+                $this->currentUser->setKarma($this->currentUser->getKarma() + $value);
+            }
         }
 
         public function editProfile($field, $value) {
