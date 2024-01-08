@@ -67,6 +67,7 @@
                 <div class="col-xs-12 col-sm-6 col-sm-push-3 col-md-4 col-md-push-4">
                     <input class="form-control" type="text" placeholder="Type here your email address">
                     <a href="" class="btn btn-lg sr-button">SUBSCRIBE</a>
+                    <p id="alreadySub" class="d-none">This email is already subscribed</p>
                 </div>
             </div>
         </form>
