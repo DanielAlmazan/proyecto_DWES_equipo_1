@@ -16,11 +16,9 @@
         private bool $pending;
         private bool $approved;
 
-        public function __construct(int $id, string $name, string $description, string $province,
+        public function __construct(string $name, string $description, string $province,
             string $locality, string $terrainType, DateTime $date, string $type, 
-            string $bannerPicture) {
-            
-            $this->id = $id;
+            string $bannerPicture, int $id = null) {
             $this->name = $name;
             $this->description = $description;
             $this->province = $province;
@@ -35,6 +33,10 @@
             $this->bannerPicture = $bannerPicture;
             $this->pending = true;
             $this->approved = false;
+
+            if ($id != null) {
+                $this->id = $id;
+            }
         }
 
         public function getId(): int {
