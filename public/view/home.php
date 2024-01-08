@@ -31,8 +31,8 @@
             <?php
                 // TODO: Fetch events from database
                 $events = [
-                    new Event(1, "Event 1", "Description", "Province", "Locality", "Terrain type", new DateTime(), "Type", "Banner picture"),
-                    new Event(2, "Event 2", "Description", "Province", "Locality", "Terrain type", new DateTime(), "Type", "Banner picture"),
+                    new Event("Event 1", "Description", "Province", "Locality", "Terrain type", new DateTime(), "Type", "Banner picture"),
+                    new Event("Event 2", "Description", "Province", "Locality", "Terrain type", new DateTime(), "Type", "Banner picture"),
                 ];
                 foreach ($events as $event) {
                     ?>
