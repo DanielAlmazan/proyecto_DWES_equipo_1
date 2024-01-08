@@ -33,3 +33,31 @@ main {
     color: white;
     background-color: #3e8f3e;
 }
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin: 0px;
+    margin-bottom: 161px;
+}
+
+.home-page {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    height: 161px;
+}
+
+#alreadySub {
+    color: #31b0d5;
+    background-color: #0505066e;
+    border-radius: 1rem;
+    padding: 1rem;
+}
+
+.d-none {
+    display: none;
+}
