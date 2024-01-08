@@ -6,8 +6,7 @@ CREATE TABLE users (
     nickname VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
     karma INT DEFAULT 0,
-    avatar VARCHAR(1000),
-    newsletterSubscription BOOLEAN DEFAULT false
+    avatar VARCHAR(1000)
 );
 
 CREATE TABLE events (
@@ -48,4 +47,8 @@ CREATE TABLE speciesInEvent (
     PRIMARY KEY (specieId, eventId),
     CONSTRAINT fk_speciesInEvent_species FOREIGN KEY (specieId) REFERENCES species(id),
     CONSTRAINT fk_speciesInEvent_events FOREIGN KEY (eventId) REFERENCES events(id)
+);
+
+CREATE TABLE newsletterSubscribers (
+    email VARCHAR(255) PRIMARY KEY
 );
