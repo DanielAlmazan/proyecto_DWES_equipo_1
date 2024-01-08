@@ -30,6 +30,9 @@ $router->add('/achievements', function () {
 $router->add('/blog', function () {
     header('Location: /view/blog.php');
 });
+$router->add('add-event', function () {
+    header('Location: /view/newEvent.php');
+});
 
 $router->run();
 ?>
