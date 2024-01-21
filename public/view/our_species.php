@@ -2,14 +2,6 @@
     include('header.php');
 
 ?>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our species</title>
-</head>
-<body>
     <section class="speciesContainer">
         <h1>Summary</h1>
         <?php foreach ($species as $specie) : ?>
@@ -34,5 +26,4 @@
     <?php
         include('footer.php');
     ?>
-</body>
-</html>
+
