@@ -1,5 +1,8 @@
 <?php
 
+    require_once dirname(__DIR__) . '/DB/ReforestaDB.php';
+    use DB\ReforestaDB;
+
     class Specie {
         private int $id;
         private string $scientificName;
@@ -99,4 +102,30 @@
         public function setUrl(string $url): void {
             $this->url = $url;
         }
+
+        public static function getSpecies() {
+            $db = new ReforestaDB();
+            $connection = $db->getPdo();
+        
+            $selection = "SELECT id, scientificName, commonName, climate, region, daysToGrow, benefits, picture, url FROM species";
+            $query = $connection->query($selection);
+            $species = [];
+        
+            while ($record = $query->fetchobject()) {
+                $benefits = explode(',', $record->benefits);
+                $species[] = new Specie(
+                    $record->id,
+                    $record->scientificName,
+                    $record->commonName,
+                    $record->climate,
+                    $record->region,
+                    $record->daysToGrow,
+                    $benefits,
+                    $record->picture,
+                    $record->url
+                );
+            }
+            return $species;
+        }
+        
     }

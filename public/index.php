@@ -1,4 +1,6 @@
 <?php
+
+require_once ("controller/SpeciesController.php");
 require 'Router.php';
 
 $router = new Router();
