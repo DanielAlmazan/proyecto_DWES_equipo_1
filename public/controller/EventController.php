@@ -1,6 +1,4 @@
 <?php
-
-    namespace controller;
     use Event;
 
     class EventController {

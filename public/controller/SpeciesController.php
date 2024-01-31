@@ -1,7 +1,5 @@
 <?php
 
-namespace controller;
-
 use Specie;
 use DB\ReforestaDB;
 
