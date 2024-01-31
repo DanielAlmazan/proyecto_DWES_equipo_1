@@ -1,6 +1,6 @@
 <?php
     include('header.php');
-
+    $species=[];
 ?>
     <section class="speciesContainer">
         <h1>Summary</h1>
