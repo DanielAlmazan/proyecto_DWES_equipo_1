@@ -8,17 +8,16 @@
         private string $terrainType;
         private DateTime $date;
         private string $type;
-        /*
-        TODO: Add attributes 'host', 'attendees' and 'species' once their respective
-         model are finished
-        */
+        private User $host;
         private string $bannerPicture;
         private bool $pending;
         private bool $approved;
+        private array $attendees;
+        private array $species;
 
         public function __construct(string $name, string $description, string $province,
             string $locality, string $terrainType, DateTime $date, string $type, 
-            string $bannerPicture, int $id = null) {
+            User $host, string $bannerPicture, int $id = null) {
             $this->name = $name;
             $this->description = $description;
             $this->province = $province;
@@ -26,10 +25,7 @@
             $this->terrainType = $terrainType;
             $this->date = $date;
             $this->type = $type;
-            /*
-            TODO: Add attributes 'host', 'attendees' and 'species' once their respective
-             model are finished
-            */
+            $this->host = $host;
             $this->bannerPicture = $bannerPicture;
             $this->pending = true;
             $this->approved = false;
@@ -99,6 +95,14 @@
             $this->type = $type;
         }
 
+        public function getHost(): User {
+            return $this->host;
+        }
+
+        public function setHost(User $host): void {
+            $this->host = $host;
+        }
+
         public function getBannerPicture(): string {
             return $this->bannerPicture;
         }
@@ -121,6 +125,62 @@
 
         public function setApproved(bool $approved): void {
             $this->approved = $approved;
+        }
+
+        public function getAttendees(): array {
+            return $this->attendees;
+        }
+
+        public function setAttendees(array $attendees): void {
+            $this->attendees = $attendees;
+        }
+
+        public function getSpecies(): array {
+            return $this->species;
+        }
+
+        public function setSpecies(array $species): void {
+            $this->species = $species;
+        }
+
+        public function delete(): void {
+            $conexion = ReforestaDB::connectDB();
+            $borrado = 'DELETE FROM events WHERE id=\"' . $this->id . "\"";
+            $conexion->exec($borrado);
+        }
+
+        public function insert(): void {
+            $conexion = ReforestaDB::connectDB();
+            $insercion = "INSERT INTO events (host, description, province, locality, terrainType, date, type) " . 
+            "VALUES (\"" . $this->host . "\", \"" . $this->description . "\", \"" . $this->province .
+            "\", \"" . $this->locality . "\", \"" . $this->terrainType . "\", \"" . $this->date . "\", \"" . $this->type . ")";
+            $conexion->exec($insercion);
+        }
+
+        public static function getEvents(): array {
+            $conexion = ReforestaDB::connectDB();
+            $seleccion = "SELECT * FROM events";
+            $consulta = $conexion->query($seleccion);
+            $ofertas = [];
+
+            while ($registro = $consulta->fetchObject()) {
+                $ofertas[] = new Event($registro->name, $registro->description, $registro->province,
+                $registro->locality, $registro->terrainType, $registro->date, $registro->type,
+                $registro->host, $registro->bannerPicture, $registro->id);
+            }
+
+            return $ofertas; 
+        }
+
+        public static function getEvent($id): Event {
+            $conexion = ReforestaDB::connectDB();
+            $seleccion = "SELECT * FROM pizza WHERE id=\"" . $id . "\"";
+            $consulta = $conexion->query($seleccion);
+            $registro = $consulta->fetchObject(); 
+
+            return new Event($registro->name, $registro->description, $registro->province,
+            $registro->locality, $registro->terrainType, $registro->date, $registro->type,
+            $registro->host, $registro->bannerPicture, $registro->id);
         }
     }
 
