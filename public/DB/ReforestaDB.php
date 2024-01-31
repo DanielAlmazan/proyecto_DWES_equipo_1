@@ -1,26 +1,20 @@
 <?php
-
-    namespace DB;
-
-    use PDO;
-    use User;
-
     class ReforestaDB {
-        /** Gets a PDO object.
-         * @return PDO The PDO object.
-         */
-        function getPdo(): PDO {
-            $host = "database";
-            $nombreDB = "reforestaDB";
-            $usuario = "root";
-            $password = "Pass1234";
+        private static string $host = 'database';
+        private static string $dbName = 'reforestaDB';
+        private static string $user = 'root';
+        private static string $password = 'Pass1234';
 
-            $pdo = new PDO("mysql:host=$host;dbname=$nombreDB;charset=utf8", $usuario, $password);
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            return $pdo;
+        public static function connectDB() {
+            try {
+                return new PDO("mysql:host=" . self::$host . ";dbname=" . self::$dbName . ";charset=utf8", self::$user, self::$password);
+            } catch(PDOException $e) {
+                return null;
+            }
         }
 
-        /* User constructor:
+        /* TODO: Mover esto a User.php
+        User constructor:
         int $id, string $name, string $surnames, string $email,string $nickName, string $password, string $avatar*/
         function insertUser(PDO $pdo, User $user) {
             // TODO: Create users table in database
@@ -36,4 +30,5 @@
             $sentence->bindParam(":password", $password);
             $sentence->execute();
         }
+
     }
