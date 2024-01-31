@@ -11,12 +11,14 @@ CREATE TABLE users (
 
 CREATE TABLE events (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
     host INT NOT NULL,
     description VARCHAR(255),
     province VARCHAR(255) NOT NULL,
     locality VARCHAR(255) NOT NULL,
     terrainType VARCHAR(255),
     date DATETIME NOT NULL,
+    bannerPicture VARCHAR(1000),
     type ENUM('urbana', 'rural de conservación', 'rural de protección', 'rural de agroforestal', 'rural productiva'),
     CONSTRAINT fk_events_users FOREIGN KEY (host) REFERENCES users(id)
 );
