@@ -9,6 +9,11 @@ CREATE TABLE users (
     avatar VARCHAR(1000)
 );
 
+CREATE TABLE admins (
+    id INT PRIMARY KEY,
+    CONSTRAINT fk_admins_users FOREIGN KEY (id) REFERENCES users(id)
+);
+
 CREATE TABLE events (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255),
@@ -54,3 +59,8 @@ CREATE TABLE speciesInEvent (
 CREATE TABLE newsletterSubscribers (
     email VARCHAR(255) PRIMARY KEY
 );
+
+-- DATOS --
+
+INSERT INTO users (name, surnames, email, nickName, password, avatar)
+    VALUES ("Miguel", "Collado", "mig@gmail.es", "mike", );

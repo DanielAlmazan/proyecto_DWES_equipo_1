@@ -94,6 +94,33 @@
 		    $this->newsletterSubscription = $newsletterSubscription;
 	    }
 
+
+        function insertUser(User $user) {
+            $pdo = ReforestaDB::connectDB();
+            $sql = "INSERT INTO users (name, surnames, email, nickName, password, avatar)" .
+				" VALUES (:name, :surnames, :email, :nickName, :password, :avatar)";
+            $insert = $pdo->prepare($sql);
+
+			// Get params
+            $name = $user->getName();
+            $surnames = $user->getSurnames();
+            $email = $user->getEmail();
+			$nickName = $user->getNickName();
+            $password = $user->getPassword();
+			$avatar = $user->getAvatar();
+
+			// Bind params
+            $insert->bindParam(":name", $name);
+            $insert->bindParam(":surnames", $surnames);
+            $insert->bindParam(":email", $email);
+            $insert->bindParam(":nickName", $nickName);
+			$insert->bindParam(":password", $password);
+			$insert->bindParam(":avatar", $avatar);
+			
+            $insert->execute();
+			$pdo = null;
+        }
+
 	
 		public static function getUsers():array {
             $db = ReforestaDB::connectDB();
@@ -123,21 +150,6 @@
 			);
 			return $user;
 		}
-
-		function addUser(User $user):void {
-			$db = ReforestaDB::connectDB();
-            $sql = "INSERT INTO users (name, surnames, email, nickName, password, avatar) VALUES (:name, :surnames, :email, :nickName, :password, :avatar)";
-            $stmt = $db->prepare($sql);
-            $name = $user->getName();
-            $surnames = $user->getSurnames();
-            $email = $user->getEmail();
-            $password = $user->getPassword();
-            $stmt->bindParam(":name", $name);
-            $stmt->bindParam(":surnames", $surnames);
-            $stmt->bindParam(":email", $email);
-            $stmt->bindParam(":password", $password);
-            $stmt->execute();
-        }
 		
 		function updateUser(User $user):void {
 			$db = ReforestaDB::connectDB();
@@ -161,6 +173,7 @@
 			$stmt->execute();
 		}
 		
+
 
     }
 ?>

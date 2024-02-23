@@ -1,11 +1,11 @@
 <?php
     class Admin extends User {
         public function confirmEvent() {
-            // TO-DO
+            // TODO
         }
 
         public function addSpecie() {
-            // TO-DO
+            // TODO
         }
     }
 ?>
