@@ -1,7 +1,7 @@
 <?php
 
     require_once dirname(__DIR__) . '/DB/ReforestaDB.php';
-    use DB\ReforestaDB;
+ 
 
     class Specie {
         private int $id;
@@ -103,29 +103,84 @@
             $this->url = $url;
         }
 
-        public static function getSpecies() {
-            $db = new ReforestaDB();
-            $connection = $db->getPdo();
+        public static function getSpecies():array {
+
+            $db = ReforestaDB::connectDB();
+          
         
-            $selection = "SELECT id, scientificName, commonName, climate, region, daysToGrow, benefits, picture, url FROM species";
-            $query = $connection->query($selection);
+            $sql = "SELECT * FROM species";
+            $stmt = $db->query($sql);
             $species = [];
         
-            while ($record = $query->fetchobject()) {
+            while ($record = $stmt->fetchobject()) {
                 $benefits = explode(',', $record->benefits);
-                $species[] = new Specie(
-                    $record->id,
-                    $record->scientificName,
-                    $record->commonName,
-                    $record->climate,
-                    $record->region,
-                    $record->daysToGrow,
-                    $benefits,
-                    $record->picture,
-                    $record->url
+                $species[] = new Specie($record->id, $record->scientificName, $record->commonName,
+            $record->climate, $record->region, $record->daysToGrow, $record->$benefits,
+            $record->picture, $record->url
                 );
             }
             return $species;
         }
+
+        public static function getSpecie(int $id): Specie {
+            $db = ReforestaDB::connectDB();
+            $sql = "SELECT * FROM species WHERE id=:id";
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+            $stmt->execute();
+            $record = $stmt->fetchObject();
+            $benefits = explode(',', $record->benefits);
+        
+            return new Specie(
+                $record->id, $record->scientificName, $record->commonName,
+                $record->climate, $record->region, $record->daysToGrow, $benefits,
+                $record->picture, $record->url
+            );
+        }
+        
+        public static function addSpecie(Specie $specie): void {
+            $db = ReforestaDB::connectDB();
+            $sql = "INSERT INTO species (scientificName, commonName, climate, region, daysToGrow, benefits, picture, url) VALUES (:scientificName, :commonName, :climate, :region, :daysToGrow, :benefits, :picture, :url)";
+            $stmt = $db->prepare($sql);
+            $benefits = implode(',', $specie->getBenefits()); 
+            $stmt->bindParam(":scientificName", $specie->getScientificName());
+            $stmt->bindParam(":commonName", $specie->getCommonName());
+            $stmt->bindParam(":climate", $specie->getClimate());
+            $stmt->bindParam(":region", $specie->getRegion());
+            $stmt->bindParam(":daysToGrow", $specie->getDaysToGrow());
+            $stmt->bindParam(":benefits", $benefits);
+            $stmt->bindParam(":picture", $specie->getPicture());
+            $stmt->bindParam(":url", $specie->getUrl());
+            $stmt->execute();
+        }
+        
+        public static function updateSpecie(Specie $specie): void {
+            $db = ReforestaDB::connectDB();
+            $sql = "UPDATE species SET scientificName=:scientificName, commonName=:commonName, climate=:climate, region=:region, daysToGrow=:daysToGrow, benefits=:benefits, picture=:picture, url=:url WHERE id=:id";
+            $stmt = $db->prepare($sql);
+            $benefits = implode(',', $specie->getBenefits()); 
+            $stmt->bindParam(":scientificName", $specie->getScientificName());
+            $stmt->bindParam(":commonName", $specie->getCommonName());
+            $stmt->bindParam(":climate", $specie->getClimate());
+            $stmt->bindParam(":region", $specie->getRegion());
+            $stmt->bindParam(":daysToGrow", $specie->getDaysToGrow());
+            $stmt->bindParam(":benefits", $benefits);
+            $stmt->bindParam(":picture", $specie->getPicture());
+            $stmt->bindParam(":url", $specie->getUrl());
+            $stmt->bindParam(":id", $specie->getId(), PDO::PARAM_INT);
+            $stmt->execute();
+        }
+        
+        
+        public static function deleteSpecie(int $id): void {
+            $db = ReforestaDB::connectDB();
+            $sql = "DELETE FROM species WHERE id=:id";
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+            $stmt->execute();
+        }
+        
+        
+        
         
     }

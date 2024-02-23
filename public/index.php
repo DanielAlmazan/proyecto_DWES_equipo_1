@@ -1,7 +1,13 @@
 <?php
 
-require_once ("controller/SpeciesController.php");
+require_once ("./controller/EventController.php");
+require_once ("./controller/SpeciesController.php");
+require_once ("./controller/UserController.php");
+
 require 'Router.php';
+
+define('VIEWS_PATH', __DIR__ . '/view');
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
 $router = new Router();
 
