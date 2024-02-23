@@ -90,5 +90,31 @@
 	    public function setNewsletterSubscription(bool $newsletterSubscription): void {
 		    $this->newsletterSubscription = $newsletterSubscription;
 	    }
+
+        function insertUser(User $user) {
+            $pdo = ReforestaDB::connectDB();
+            $sql = "INSERT INTO users (name, surnames, email, nickName, password, avatar)" .
+				" VALUES (:name, :surnames, :email, :nickName, :password, :avatar)";
+            $insert = $pdo->prepare($sql);
+
+			// Get params
+            $name = $user->getName();
+            $surnames = $user->getSurnames();
+            $email = $user->getEmail();
+			$nickName = $user->getNickName();
+            $password = $user->getPassword();
+			$avatar = $user->getAvatar();
+
+			// Bind params
+            $insert->bindParam(":name", $name);
+            $insert->bindParam(":surnames", $surnames);
+            $insert->bindParam(":email", $email);
+            $insert->bindParam(":nickName", $nickName);
+			$insert->bindParam(":password", $password);
+			$insert->bindParam(":avatar", $avatar);
+			
+            $insert->execute();
+			$pdo = null;
+        }
     }
 ?>
