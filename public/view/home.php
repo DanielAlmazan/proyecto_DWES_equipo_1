@@ -1,4 +1,5 @@
 <?php
+
     require_once("header.php");
     require_once("../model/Event.php");
     require_once("../model/User.php");
@@ -13,7 +14,7 @@
 
 <!-- Principal Content Start -->
 <div id="index">
-
+    
     <!-- Header -->
     <div class="row">
         <div class="col-xs-12 intro">
@@ -24,40 +25,42 @@
             </div>
         </div>
     </div>
-
+    
     <main>
         <h2>Events</h2>
         <div id="eventsContainer">
             <?php
                 // TODO: Fetch events from database
                 $events = [
-                    new Event("Event 1", "Description", "Province", "Locality", "Terrain type", new DateTime(), "Type", "Banner picture"),
-                    new Event("Event 2", "Description", "Province", "Locality", "Terrain type", new DateTime(), "Type", "Banner picture"),
+                    new Event("Event 1", "Description", "Province", "Locality", "Terrain type", new DateTime(), "Type", $user, "oak.png"),
+                    new Event("Event 2", "Description", "Province", "Locality", "Terrain type", new DateTime(), "Type", $user, "juniper.png"),
                 ];
                 foreach ($events as $event) {
                     ?>
                     <div class="event">
-                        <h2><?= $event->getName() ?></h2>
-                        <h3><?= $event->getDescription() ?></h3>
-                        <p><?= $event->getBannerPicture() ?></p>
-                        <p><small><?= $event->getLocality() ?></small></p>
-                        <?php
-                            if ($loggedIn) {
-                                // TODO: Call some kind of "joinToEvent" method
-                                ?>
-                                <form action="#">
-                                    <input type="submit" value="Join Event" id="btnJoinEvent">
-                                </form>
-                                <?php
-                            }
-                        ?>
+                        <img src="../res/images/species/<?= $event->getBannerPicture() ?>"
+                             alt="<?= $event->getBannerPicture() ?>">
+                        <div class="event-body">
+                            <h2><?= $event->getName() ?></h2>
+                            <p><small><?= $event->getLocality() ?></small></p>
+                            <?php
+                                if ($loggedIn) {
+                                    // TODO: Call some kind of "joinToEvent" method
+                                    ?>
+                                    <form action="#">
+                                        <input type="submit" value="Join Event" id="btnJoinEvent">
+                                    </form>
+                                    <?php
+                                }
+                            ?>
+                        </div>
                     </div>
                     <?php
                 }
             ?>
         </div>
     </main>
-
+    
     <!-- Newsletter form -->
     <div class="index-form text-center">
         <h3>SUSCRIBE TO OUR NEWSLETTER </h3>

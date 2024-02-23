@@ -1,6 +1,5 @@
 <?php
 
-require_once ("controller/SpeciesController.php");
 require 'Router.php';
 
 $router = new Router();
@@ -37,4 +36,5 @@ $router->add('add-event', function () {
 });
 
 $router->run();
+require_once ("controller/SpeciesController.php");
 ?>
