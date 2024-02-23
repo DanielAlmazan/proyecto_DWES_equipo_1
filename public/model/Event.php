@@ -1,4 +1,7 @@
 <?php
+
+    require_once dirname(__DIR__) . '/DB/ReforestaDB.php';
+
     class Event {
         private int $id;
         private string $name;

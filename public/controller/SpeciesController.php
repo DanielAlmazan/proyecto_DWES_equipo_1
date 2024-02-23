@@ -1,20 +1,22 @@
 <?php
 
-use Specie;
-use DB\ReforestaDB;
+require "./model/Specie.php";
 
 class SpeciesController {
 
-    private array $species;
 
-    public function __construct() {
-        
+
+    public function showSpecies()
+    {
+        $species=Specie::getSpecies();
+        require VIEWS_PATH . '/home.php';
+
     }
 
-     function getSpeciesList() {
-        $species=Specie::getSpecies();
-        require_once dirname(__DIR__).'/view/our_species.php';
-        
+
+    public function showSpecie($id)
+    {
+        $specie=Specie::getSpecie($id);
     }
 
 

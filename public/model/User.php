@@ -1,4 +1,7 @@
 <?php
+
+    require_once dirname(__DIR__) . '/DB/ReforestaDB.php';
+
     class User {
         private int $id;
         private string $name;
@@ -91,6 +94,7 @@
 		    $this->newsletterSubscription = $newsletterSubscription;
 	    }
 
+
         function insertUser(User $user) {
             $pdo = ReforestaDB::connectDB();
             $sql = "INSERT INTO users (name, surnames, email, nickName, password, avatar)" .
@@ -116,5 +120,60 @@
             $insert->execute();
 			$pdo = null;
         }
+
+	
+		public static function getUsers():array {
+            $db = ReforestaDB::connectDB();
+            $sql = "SELECT * FROM users";
+            $stmt = $db->query($sql);
+            $users = [];
+        
+            while ($record = $stmt->fetchobject()) {
+                $users[] = new User(
+                    $record->id,$record->name,$record->surenames,$record->email,$record->nickName,
+					$record->password,$record->avatar,$record->newsletterSubscription
+                );
+            }
+            return $users;
+        }
+		
+		function getUser(int $id):User {
+			$db = ReforestaDB::connectDB();
+			$sql = "SELECT * FROM users WHERE id= :id";
+			$stmt = $db->prepare($sql);
+			$stmt->bindParam(":id", $id, PDO::PARAM_INT);
+			$stmt->execute();
+			$record = $stmt->fetchObject();
+			$user = new User(
+				$record->id, $record->name, $record->surnames, $record->email, $record->nickName,
+				$record->password, $record->avatar
+			);
+			return $user;
+		}
+		
+		function updateUser(User $user):void {
+			$db = ReforestaDB::connectDB();
+			$sql = "UPDATE users SET name=:name, surnames=:surnames, email=:email, nickName=:nickName, password=:password, avatar=:avatar WHERE id=:id";
+			$stmt = $db->prepare($sql);
+			$stmt->bindParam(":name", $user->getName());
+			$stmt->bindParam(":surnames", $user->getSurnames());
+			$stmt->bindParam(":email", $user->getEmail());
+			$stmt->bindParam(":nickName", $user->getNickName());
+			$stmt->bindParam(":password", $user->getPassword());
+			$stmt->bindParam(":avatar", $user->getAvatar());
+			$stmt->bindParam(":id", $user->getId(), PDO::PARAM_INT);
+			$stmt->execute();
+		}
+		
+		function deleteUser(int $id):void {
+			$db = ReforestaDB::connectDB();
+			$sql = "DELETE FROM users WHERE id= :id";
+			$stmt = $db->prepare($sql);
+			$stmt->bindParam(":id", $id, PDO::PARAM_INT);
+			$stmt->execute();
+		}
+		
+
+
     }
 ?>
