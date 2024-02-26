@@ -144,43 +144,105 @@
         }
 
         public function delete(): void {
-            $conexion = ReforestaDB::connectDB();
-            $borrado = 'DELETE FROM events WHERE id=\"' . $this->id . "\"";
-            $conexion->exec($borrado);
+            $connection = ReforestaDB::connectDB();
+
+            $delete = $connection->prepare('DELETE FROM events WHERE id=:id');
+            $delete->bindParam(':id', $this->id);
+
+            $connection->exec($delete);
+            $delete = null;
+            $connection = null;
         }
 
         public function insert(): void {
-            $conexion = ReforestaDB::connectDB();
-            $insercion = "INSERT INTO events (host, description, province, locality, terrainType, date, type) " . 
-            "VALUES (\"" . $this->host . "\", \"" . $this->description . "\", \"" . $this->province .
-            "\", \"" . $this->locality . "\", \"" . $this->terrainType . "\", \"" . $this->date . "\", \"" . $this->type . ")";
-            $conexion->exec($insercion);
+            $connection = ReforestaDB::connectDB();
+            
+            $insertion = $connection->prepare('INSERT INTO events (name, host, description, province, locality, ' . 
+            'terrainType, date, bannerPicture, type) VALUES (:name, :host, :description, :province, :locality, ' .
+            ':terrainType, :date, :bannerPicture, :type)');
+
+            $insertion->bindParam(':name', $this->name);
+            $hostId = $this->host->getId();
+            $insertion->bindParam(':host', $hostId);
+            $insertion->bindParam(':description', $this->description);
+            $insertion->bindParam(':province', $this->province);
+            $insertion->bindParam(':locality', $this->locality);
+            $insertion->bindParam(':terrainType', $this->terrainType);
+            $insertion->bindParam(':date', $this->date);
+            $insertion->bindParam(':bannerPicture', $this->bannerPicture);
+            $insertion->bindParam(':type', $this->type);
+
+            $connection->exec($insertion);
+            $insertion = null;
+            $connection = null;
         }
 
-        public static function getEvents(): array {
-            $conexion = ReforestaDB::connectDB();
-            $seleccion = "SELECT * FROM events";
-            $consulta = $conexion->query($seleccion);
-            $ofertas = [];
+        private function insertAttendees(int $idAttendee): void {
+            $connection = ReforestaDB::connectDB();
 
-            while ($registro = $consulta->fetchObject()) {
-                $ofertas[] = new Event($registro->name, $registro->description, $registro->province,
-                $registro->locality, $registro->terrainType, $registro->date, $registro->type,
-                $registro->host, $registro->bannerPicture, $registro->id);
+            $insertion = $connection->prepare('INSERT INTO usersInEvents (userId, eventId) VALUES (:userId, :eventId)');
+            $insertion->bindParam(':userId', $idAttendee);
+            $insertion->bindParam(':eventId', $this->id);
+
+            $connection->exec($insertion);
+            $insertion = null;
+            $connection = null;
+        }
+
+        public static function getAll(): array {
+            $connection = ReforestaDB::connectDB();
+
+            $query = 'SELECT * FROM events';
+            $selection = $connection->query($query);
+            $events = [];
+
+            while ($entry = $selection->fetchObject()) {
+                $events[] = Event::getById($entry->id);
             }
 
-            return $ofertas; 
+            $selection = null;
+            $connection = null;
+            return $events; 
         }
 
-        public static function getEvent($id): Event {
-            $conexion = ReforestaDB::connectDB();
-            $seleccion = "SELECT * FROM pizza WHERE id=\"" . $id . "\"";
-            $consulta = $conexion->query($seleccion);
-            $registro = $consulta->fetchObject(); 
+        public static function getById(int $id): Event {
+            $connection = ReforestaDB::connectDB();
 
-            return new Event($registro->name, $registro->description, $registro->province,
-            $registro->locality, $registro->terrainType, $registro->date, $registro->type,
-            $registro->host, $registro->bannerPicture, $registro->id);
+            // Getting the basic info
+            $query = $connection->prepare('SELECT * FROM events WHERE id=:id');
+            $selection = $connection->query($query);
+            $entry = $selection->fetchObject();
+
+            //$host = User::getById($entry->host);
+
+            $event = new Event($entry->name, $entry->description, $entry->province,
+            $entry->locality, $entry->terrainType, $entry->date, $entry->type,
+            $entry->host, $entry->bannerPicture, $entry->id);
+            $selection = null;
+
+            // Getting the attendees
+            $queryUsersInEvent = $connection->prepare('SELECT * FROM usersInEvent WHERE eventId=:eventId');
+            $queryUsersInEvent->bindParam(':eventId', $id);
+            $selectionAttendees = $connection->query($queryUsersInEvent);
+
+            while($entry = $selectionAttendees->fetchObject()) {
+                //$event->attendees[] = User::getById($entry->userId);
+            }
+            $selectionAttendees = null;
+
+            // Getting the species
+            $querySpeciesInEvent = $connection->prepare('SELECT * FROM speciesInEvent WHERE eventId=:eventId');
+            $querySpeciesInEvent->bindParam(':eventId', $id);
+            $selectionSpecies = $connection->query($querySpeciesInEvent);
+
+            while($entry = $selectionSpecies->fetchObject()) {
+                //$event->species[] = Specie::getById($entry->specieId);
+            }
+            $selectionSpecies = null;
+            
+            $connection = null;
+
+            return $event;
         }
     }
 
