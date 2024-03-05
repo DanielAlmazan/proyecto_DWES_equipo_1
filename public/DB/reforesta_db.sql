@@ -1,7 +1,7 @@
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255),
-    surname VARCHAR(255),
+    surnames VARCHAR(255),
     email VARCHAR(255) NOT NULL,
     nickname VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
@@ -63,6 +63,6 @@ CREATE TABLE newsletterSubscribers (
 -- DATOS --
 
 INSERT INTO users (name, surnames, email, nickName, password, avatar)
-    VALUES ("Miguel", "Collado", "mig@gmail.es", "mike", "1234", "client2.jpg");
+    VALUES ('Miguel', 'Collado', 'mig@gmail.es', 'mike', '1234', 'client2.jpg');
 INSERT INTO users (name, surnames, email, nickName, password, avatar)
-    VALUES ("Lucia", "Rodriguez", "luci@gmail.es", "luciRod", "luci", "client1.jpg");
+    VALUES ('Lucia', 'Rodriguez', 'luci@gmail.es', 'luciRod', 'luci', 'client1.jpg');
