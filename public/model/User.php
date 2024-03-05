@@ -1,7 +1,4 @@
 <?php
-
-    require_once dirname(__DIR__) . '/DB/ReforestaDB.php';
-
     class User {
         private int $id;
         private string $name;
@@ -11,19 +8,18 @@
         private string $password;
         private int $karma;
         private string $avatar;
-        private bool $newsletterSubscription;
 
-        public function __construct(int $id, string $name, string $surnames, string $email,
-            string $nickName, string $password, string $avatar) {
-            $this->id = $id;
+		// Default id = 0 for users not inserted in DB
+        public function __construct(string $name, string $surnames, string $email,
+            string $nickName, string $password, string $avatar, int $karma = 0, int $id = 0) {
             $this->name = $name;
             $this->surnames = $surnames;
             $this->email = $email;
             $this->nickName = $nickName;
             $this->password = $password;
-            $this->karma = 0;
             $this->avatar = $avatar;
-            $this->newsletterSubscription = false;
+			$this->karma = $karma;
+			$this->id = $id;
         }
 
 	    public function getId(): int {
@@ -86,94 +82,148 @@
 		    $this->avatar = $avatar;
 	    }
 
-	    public function isNewsletterSubscription(): bool {
-		    return $this->newsletterSubscription;
-	    }
-
-	    public function setNewsletterSubscription(bool $newsletterSubscription): void {
-		    $this->newsletterSubscription = $newsletterSubscription;
-	    }
-
-
-        function insertUser(User $user) {
+        function insert() {
             $pdo = ReforestaDB::connectDB();
             $sql = "INSERT INTO users (name, surnames, email, nickName, password, avatar)" .
 				" VALUES (:name, :surnames, :email, :nickName, :password, :avatar)";
             $insert = $pdo->prepare($sql);
 
-			// Get params
-            $name = $user->getName();
-            $surnames = $user->getSurnames();
-            $email = $user->getEmail();
-			$nickName = $user->getNickName();
-            $password = $user->getPassword();
-			$avatar = $user->getAvatar();
+			// Bind params
+            $insert->bindParam(":name", $this->name);
+            $insert->bindParam(":surnames", $this->surnames);
+            $insert->bindParam(":email", $this->email);
+            $insert->bindParam(":nickName", $this->nickName);
+			$insert->bindParam(":password", $this->password);
+			$insert->bindParam(":avatar", $this->avatar);
+			
+            $insert->execute();
+			$pdo = null;
+        }
+		
+		function update() {
+			$pdo = ReforestaDB::connectDB();
+			$sql = "UPDATE users SET name=:name, surnames=:surnames, email=:email, nickName=:nickName, password=:password, avatar=:avatar WHERE id=:id";
+			$update = $pdo->prepare($sql);
 
 			// Bind params
-            $insert->bindParam(":name", $name);
-            $insert->bindParam(":surnames", $surnames);
+			$update->bindParam(":name", $this->name);
+			$update->bindParam(":surnames", $this->surnames);
+			$update->bindParam(":email", $this->email);
+			$update->bindParam(":nickName", $this->nickName);
+			$update->bindParam(":password", $this->password);
+			$update->bindParam(":avatar", $this->avatar);
+			$update->bindParam(":id", $this->id);
+
+			$update->execute();
+			$pdo = null;
+		}
+
+		function updateKarma() {
+			$pdo = ReforestaDB::connectDB();
+			$sql = "UPDATE users SET karma=:karma WHERE id=:id";
+			$update = $pdo->prepare($sql);
+
+			// Bind params
+			$update->bindParam(":karma", $this->karma);
+			$update->bindParam(":id", $this->id);
+
+			$update->execute();
+			$pdo = null;
+		}
+		
+		function delete() {
+			$pdo = ReforestaDB::connectDB();
+			$sql = "DELETE FROM users WHERE id=:id";
+			$delete = $pdo->prepare($sql);
+
+			// Bind params
+			$delete->bindParam(":id", $id);
+
+			$delete->execute();
+			$pdo = null;
+		}
+
+		static function getAll() {
+            $pdo = ReforestaDB::connectDB();
+            $sql = "SELECT * FROM users";
+            $users = [];
+
+            $select = $pdo->query($sql);
+            while ($user = $select->fetchobject()) {
+                $users[] = new User(
+					$user->name,
+					$user->surenames,
+					$user->email,
+					$user->nickName,
+					$user->password,
+					$user->avatar,
+					$user->karma,
+					$user->id
+                );
+            }
+
+			$pdo = null;
+            return $users;
+        }
+		
+		static function getById(int $id) {
+			$pdo = ReforestaDB::connectDB();
+			$sql = "SELECT * FROM users WHERE id=:id";
+			$select = $pdo->prepare($sql);
+
+			// Bind params
+			$select->bindParam(":id", $id);
+
+			$select->execute();
+			if($result = $select->fetchObject()) {
+				$user = new User(
+					$result->name, 
+					$result->surnames, 
+					$result->email, 
+					$result->nickName,
+					$result->password, 
+					$result->avatar,
+					$result->karma,
+					$result->id
+				);
+			} else $user = null;
+
+			$pdo = null;
+			return $user;
+		}
+
+		static function suscribeNewsletter(string $email) {
+            $pdo = ReforestaDB::connectDB();
+            $sql = "INSERT INTO newsletterSubscribers (:email)";
+            $insert = $pdo->prepare($sql);
+
+			// Bind params
             $insert->bindParam(":email", $email);
-            $insert->bindParam(":nickName", $nickName);
-			$insert->bindParam(":password", $password);
-			$insert->bindParam(":avatar", $avatar);
 			
             $insert->execute();
 			$pdo = null;
         }
 
-	
-		public static function getUsers():array {
-            $db = ReforestaDB::connectDB();
-            $sql = "SELECT * FROM users";
-            $stmt = $db->query($sql);
-            $users = [];
-        
-            while ($record = $stmt->fetchobject()) {
-                $users[] = new User(
-                    $record->id,$record->name,$record->surenames,$record->email,$record->nickName,
-					$record->password,$record->avatar,$record->newsletterSubscription
-                );
-            }
-            return $users;
+		static function unsuscribeNewsletter(string $email) {
+            $pdo = ReforestaDB::connectDB();
+			$sql = "SELECT * FROM newsletterSubscribers WHERE email=:email";
+			$select = $pdo->prepare($sql);
+
+			// Bind params
+			$select->bindParam(":email", $email);
+
+			$select->execute();
+			if($select->fetchObject()) {
+				$sql = "DELETE FROM newsletterSubscribers WHERE email=:email";
+				$delete = $pdo->prepare($sql);
+
+				// Bind params
+				$delete->bindParam(":email", $email);;
+
+				$delete->execute();
+			}
+            
+			$pdo = null;
         }
-		
-		function getUser(int $id):User {
-			$db = ReforestaDB::connectDB();
-			$sql = "SELECT * FROM users WHERE id= :id";
-			$stmt = $db->prepare($sql);
-			$stmt->bindParam(":id", $id, PDO::PARAM_INT);
-			$stmt->execute();
-			$record = $stmt->fetchObject();
-			$user = new User(
-				$record->id, $record->name, $record->surnames, $record->email, $record->nickName,
-				$record->password, $record->avatar
-			);
-			return $user;
-		}
-		
-		function updateUser(User $user):void {
-			$db = ReforestaDB::connectDB();
-			$sql = "UPDATE users SET name=:name, surnames=:surnames, email=:email, nickName=:nickName, password=:password, avatar=:avatar WHERE id=:id";
-			$stmt = $db->prepare($sql);
-			$stmt->bindParam(":name", $user->getName());
-			$stmt->bindParam(":surnames", $user->getSurnames());
-			$stmt->bindParam(":email", $user->getEmail());
-			$stmt->bindParam(":nickName", $user->getNickName());
-			$stmt->bindParam(":password", $user->getPassword());
-			$stmt->bindParam(":avatar", $user->getAvatar());
-			$stmt->bindParam(":id", $user->getId(), PDO::PARAM_INT);
-			$stmt->execute();
-		}
-		
-		function deleteUser(int $id):void {
-			$db = ReforestaDB::connectDB();
-			$sql = "DELETE FROM users WHERE id= :id";
-			$stmt = $db->prepare($sql);
-			$stmt->bindParam(":id", $id, PDO::PARAM_INT);
-			$stmt->execute();
-		}
-		
-
-
     }
 ?>

@@ -63,4 +63,6 @@ CREATE TABLE newsletterSubscribers (
 -- DATOS --
 
 INSERT INTO users (name, surnames, email, nickName, password, avatar)
-    VALUES ("Miguel", "Collado", "mig@gmail.es", "mike", );
+    VALUES ("Miguel", "Collado", "mig@gmail.es", "mike", "1234", "client2.jpg");
+INSERT INTO users (name, surnames, email, nickName, password, avatar)
+    VALUES ("Lucia", "Rodriguez", "luci@gmail.es", "luciRod", "luci", "client1.jpg");
