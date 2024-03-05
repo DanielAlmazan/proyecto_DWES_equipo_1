@@ -9,7 +9,7 @@
             try {
                 return new PDO("mysql:host=" . self::$host . ";dbname=" . self::$dbName . ";charset=utf8", self::$user, self::$password);
             } catch(PDOException $e) {
-                return null;
+                return new PDOException($e);
             }
         }
     }
