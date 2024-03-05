@@ -1,5 +1,4 @@
 <?php
-
     require_once dirname(__DIR__) . '/DB/ReforestaDB.php';
 
     class Event {
@@ -146,17 +145,96 @@
             $this->species = $species;
         }
 
-        public function delete(): void {
-            $connection = ReforestaDB::connectDB();
+        /**
+         * Method that deletes an Event and its corresponding attendees and species
+         */
+        public function delete(): bool {
+            // Declaring the connection and the delete statements
+            $connection = null;
+            $deleteEvent = null;
+            $deleteAttendees = null;
+            $deleteSpecies = null;
 
-            $delete = $connection->prepare('DELETE FROM events WHERE id=:id');
-            $delete->bindParam(':id', $this->id);
+            // Variable to detect if the Event has been successfully deleted
+            $deleted = false;
 
-            $connection->exec($delete);
-            $delete = null;
+            try {
+                // Connecting to the Database and beginning a transaction
+                $connection = ReforestaDB::connectDB();
+                $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $connection->beginTransaction();
+
+                // Preparing the delete statement of the Event
+                $deleteEvent = $connection->prepare('DELETE FROM events WHERE id=:id');
+                $deleteEvent->bindParam(':id', $this->id);
+
+                // Preparing the delete statement of the Event's attendees
+                $deleteAttendees = $connection->prepare('DELETE FROM usersInEvent WHERE eventId=:eventId');
+                $deleteAttendees->bindParam(':eventId', $this->id);
+
+                // Preparing the delete statement of the Event's species
+                $deleteSpecies = $connection->prepare('DELETE FROM speciesInEvent WHERE eventId=:eventId');
+                $deleteSpecies->bindParam(':eventId', $this->id); 
+
+                // Executing the statements
+                $connection->exec($deleteEvent);
+                $connection->exec($deleteAttendees);
+                $connection->exec($deleteSpecies);
+
+                // Commit of the transaction
+                $connection->commit();
+                // If we reach this part of the code without throwing an exception, the Event has been deleted
+                $deleted = true;
+            } catch(Exception $e) {
+                // Showing the error to the user in the most beautiful and convenient way!
+                echo "<p>Error en la BBDD al insertar Evento: " . $e->getMessage() . "</p>";
+
+                // Rollback of the transaction
+                $connection->rollback();
+            } finally {
+                // Closing the connection and statements
+                $deleteEvent = null;
+                $deleteAttendees = null;
+                $deleteSpecies = null;
+                $connection = null;
+            }
+
+            return $deleted;
+        }
+
+        private function deleteAttendeeDB(int $idAttendee): void {
+            $connection = null;
+            $deletion = null;
+
+            try {
+                $connection = ReforestaDB::connectDB();
+
+                $deletion = $connection->prepare('DELETE FROM usersInEvent WHERE userId=:userId AND eventId=:eventId');
+                $deletion->bindParam(':userId', $idAttendee);
+                $deletion->bindParam(':eventId', $this->id);
+
+                $connection->exec($deletion);
+            } catch(PDOException $pdoe) {
+                
+            } catch(Exception $e) {
+                // Temporal hasta que veamos como mostrar errores
+                echo "<p>Error genérico al insertar Evento</p>";
+                echo "<p>" . $e->getMessage() . "</p>";
+            }
+
+            $insertion = null;
             $connection = null;
         }
 
+        private function deleteSpecieDB(int $idSpecie): void {
+
+        }
+
+        /**
+         * Method that inserts an Event and its corresponding attendees and species to the
+         * database. It does so by performing a transaction where all the data is inserted,
+         * and in case something fails, it makes a rollback.
+         */
         public function insert(): void {
             $connection = ReforestaDB::connectDB();
             
@@ -175,9 +253,27 @@
             $insertion->bindParam(':bannerPicture', $this->bannerPicture);
             $insertion->bindParam(':type', $this->type);
 
-            $connection->exec($insertion);
-            $insertion = null;
-            $connection = null;
+            try {
+                $connection->beginTransaction();
+
+                $connection->exec($insertion);
+                foreach($this->attendees as $attendee) {
+                    $this->insertAttendees($attendee->id);
+                }
+                foreach($this->species as $specie) {
+                    $this->insertSpecies($specie->id);
+                }
+
+                $connection->commit();
+            } catch(Exception $e) {
+                // Temporal hasta que veamos como mostrar errores
+                echo "<p>Error genérico al insertar Evento</p>";
+                echo "<p>" . $e->getMessage() . "</p>";
+                $connection->rollback();
+            } finally {
+                $insertion = null;
+                $connection = null;
+            }
         }
 
         private function insertAttendees(int $idAttendee): void {
@@ -190,6 +286,18 @@
             $connection->exec($insertion);
             $insertion = null;
             $connection = null;
+        }
+
+        private function insertSpecies(int $idSpecie): void {
+            $connection = ReforestaDB::connectDB();
+
+            $insertion = $connection->prepare('INSERT INTO speciesInEvents (specieId, eventId) VALUES (:specieId, :eventId)');
+            $insertion->bindParam(':specieId', $idSpecie);
+            $insertion->bindParam(':eventId', $this->id);
+
+            $connection->exec($insertion);
+            $insertion = null;
+            $connnection = null;
         }
 
         public static function getAll(): array {
@@ -248,5 +356,4 @@
             return $event;
         }
     }
-
 ?>
