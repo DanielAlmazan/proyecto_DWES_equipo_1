@@ -10,7 +10,7 @@
             <div class="col-xs-12 intro">
                 <div class="carousel-inner">
                     <div class="item active">
-                        <img class="img-responsive" src="../res/images/about_us.jpg" alt="header picture">
+                        <img class="img-responsive" src="../res/images/reforesta.png" alt="header picture">
                     </div>
                     <div class="carousel-caption">
                         <h1>ABOUT US</h1>
@@ -28,23 +28,15 @@
                 <div class="col-xs-12 col-sm-6">
                     <div class="box-about">
                         <i class="fa fa-institution fa-2x"></i>
-                        <h4>About Our Something</h4>
-                        <p class="text-left text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                            eiusmod tempor incididunt ut labore et dolore magna aliqua.Tempora ea ratione vel nisi, qui
-                            perferendis nulla, fugit aut, beatae, tempore modi. Minus sequi iste, nam nobis,
-                            excepturi.Ut enim ad enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                            aliquip ex ea commodo consequat. Duis aute irure.</p>
+                        <h4>About Our Mission</h4>
+                        <p class="text-left text-muted">Bringing trees to every forest on Earth.</p>
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-6">
                     <div class="box-about">
                         <i class="fa fa-group fa-2x"></i>
                         <h4>About Our Team</h4>
-                        <p class="text-left text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                            eiusmod tempor incididunt ut labore et dolore magna aliqua.Tempora ea ratione vel nisi, qui
-                            perferendis nulla, fugit aut, beatae, tempore modi. Minus sequi iste, nam nobis,
-                            excepturi.Ut enim ad enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                            aliquip ex ea commodo consequat. Duis aute irure.</p>
+                        <p class="text-left text-muted">The Best. The most capable. The cheapest.</p>
                     </div>
                 </div>
             </div>
@@ -55,23 +47,23 @@
                 <hr>
                 <div class="col-xs-12 col-sm-3">
                     <img class="img-responsive" src="../res/images/clients/client1.jpg" alt="client's picture">
-                    <h5>LIAM</h5>
-                    <q>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.</q>
+                    <h5>LIAM – Desarrollador</h5>
+                    <q>Y también MUY guapo.</q>
                 </div>
                 <div class="col-xs-12 col-sm-3">
                     <img class="img-responsive" src="../res/images/clients/client2.jpg" alt="client's picture">
-                    <h5>DANI</h5>
-                    <q>Tempora ea ratione vel nisi, qui perferendis nulla, fugit aut, beatae, tempore modi.</q>
+                    <h5>DANI – Analisto</h5>
+                    <q>Más listo que el hambre.</q>
                 </div>
                 <div class="col-xs-12 col-sm-3">
                     <img class="img-responsive" src="../res/images/clients/client3.jpg" alt="client's picture">
-                    <h5>CRISTIAN</h5>
-                    <q>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.</q>
+                    <h5>CRISTIAN – Desarrollador también</h5>
+                    <q>El más guapo de todos.</q>
                 </div>
                 <div class="col-xs-12 col-sm-3">
                     <img class="img-responsive" src="../res/images/clients/client4.jpg" alt="client's picture">
-                    <h5>MIKE</h5>
-                    <q>Tempora ea ratione vel nisi, qui perferendis nulla, fugit aut, beatae, tempore modi.</q>
+                    <h5>MIKE – Colaborador</h5>
+                    <q>Prácticamente un Dios griego.</q>
                 </div>
             </div>
             <!-- End of Clients Feedback -->
