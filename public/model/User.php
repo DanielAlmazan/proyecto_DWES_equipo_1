@@ -111,7 +111,7 @@
 			return $correct;
         }
 		
-		function update() {
+		function update() { // cambiar en todo el nickName por nickname, crear getUserByEmail()
 			$correct = false;
 			
 			try {
