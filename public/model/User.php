@@ -88,19 +88,30 @@
 
 			try {
 				$pdo = ReforestaDB::connectDB();
-				$sql = "INSERT INTO users (name, surnames, email, nickName, password, avatar)" .
-					" VALUES (:name, :surnames, :email, :nickName, :password, :avatar)";
+				$sql = "INSERT INTO users (name, surnames, email, nickname, password, avatar)" .
+					" VALUES (:name, :surnames, :email, :nickname, :password, :avatar)";
 				$insert = $pdo->prepare($sql);
 
 				// Bind params
 				$insert->bindParam(":name", $this->name);
 				$insert->bindParam(":surnames", $this->surnames);
 				$insert->bindParam(":email", $this->email);
-				$insert->bindParam(":nickName", $this->nickName);
+				$insert->bindParam(":nickname", $this->nickName);
 				$insert->bindParam(":password", $this->password);
 				$insert->bindParam(":avatar", $this->avatar);
 				
-				$correct = $insert->execute();
+				if($correct = $insert->execute()) {
+					$sql = "SELECT id FROM users WHERE email=:email";
+					$select = $pdo->prepare($sql);
+
+					// Bind params
+					$select->bindParam(":email", $this->email);;
+
+					$select->execute();
+					if($result = $select->fetch()) {
+						$this->id = $result->id;
+					}
+				}
 			} catch(Exception $e) {
 				echo "<p class='error'>" . $e->getMessage(). "</p>";
 			} finally {
@@ -111,19 +122,20 @@
 			return $correct;
         }
 		
-		function update() { // cambiar en todo el nickName por nickname, crear getUserByEmail()
+		function update() {
 			$correct = false;
 			
 			try {
 				$pdo = ReforestaDB::connectDB();
-				$sql = "UPDATE users SET name=:name, surnames=:surnames, email=:email, nickName=:nickName, password=:password, avatar=:avatar WHERE id=:id";
+				$sql = "UPDATE users SET name=:name, surnames=:surnames, email=:email," . 
+					" nickname=:nickname, password=:password, avatar=:avatar WHERE id=:id";
 				$update = $pdo->prepare($sql);
 
 				// Bind params
 				$update->bindParam(":name", $this->name);
 				$update->bindParam(":surnames", $this->surnames);
 				$update->bindParam(":email", $this->email);
-				$update->bindParam(":nickName", $this->nickName);
+				$update->bindParam(":nickname", $this->nickName);
 				$update->bindParam(":password", $this->password);
 				$update->bindParam(":avatar", $this->avatar);
 				$update->bindParam(":id", $this->id);
@@ -189,7 +201,7 @@
 
 				$select = $pdo->query($sql);
 				$select->execute();
-				while ($user = $select->fetchobject()) {
+				while ($user = $select->fetch()) {
 					$users[] = new User(
 						$user->name,
 						$user->surenames,
@@ -223,7 +235,7 @@
 				$select->bindParam(":id", $id);
 
 				$select->execute();
-				if($result = $select->fetchObject()) {
+				if($result = $select->fetch()) {
 					$user = new User(
 						$result->name, 
 						$result->surnames, 
@@ -250,7 +262,7 @@
 
 			try {
 				$pdo = ReforestaDB::connectDB();
-				$sql = "INSERT INTO newsletterSubscribers (:email)";
+				$sql = "INSERT INTO newsletterSubscribers VALUES (:email)";
 				$insert = $pdo->prepare($sql);
 
 				// Bind params
@@ -279,7 +291,7 @@
 				$select->bindParam(":email", $email);
 
 				$select->execute();
-				if($select->fetchObject()) {
+				if($select->fetch()) {
 					$sql = "DELETE FROM newsletterSubscribers WHERE email=:email";
 					$delete = $pdo->prepare($sql);
 
