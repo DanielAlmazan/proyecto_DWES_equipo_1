@@ -1,18 +1,22 @@
 <?php
+    session_start();
     require_once("../model/User.php");
-    // TODO: Implement sessions functionality
+    require_once("../controller/UserController.php");
+
     $loggedIn = false;
+    if(isset($_SESSION['user'])) {
+        $loggedIn = true;
+        $user = User::getById($_SESSION['user']);
+    }
 
     // If user's not logged in, we'll redirect to login page
     if (!$loggedIn) {
         header("Location: login.php");
+        die();
     // If user's logged in, we'll show it's relevant info and offer the option for editing it
-    } else {
-        // TODO: Fetch user from database
-        $user = new User(2, "Anaclet", "McJohnson", "anaclet@mc.johnson", "Anacletus", "123", "Anaclet's Avatar");
-        $user->setKarma(3);
-
-        require_once("header.php");
+    }
+    
+    require_once("header.php");
 ?>
 <main>
     <section id="userInfo">
@@ -26,9 +30,6 @@
             <input type="button" value="Edit profile">
         </form>
     </section>
-    <?php
-        }
-    ?>
 </main>
 <?php
     require_once("footer.php");
