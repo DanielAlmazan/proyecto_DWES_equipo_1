@@ -1,6 +1,9 @@
 <?php
     require_once dirname(__DIR__) . '/DB/ReforestaDB.php';
 
+    /**
+     * Class that represents an Event of Reforesta.
+     */
     class Event {
         private int $id;
         private string $name;
@@ -36,6 +39,8 @@
                 $this->id = $id;
             }
         }
+
+        // GETTERS AND SETTERS
 
         public function getId(): int {
             return $this->id;
@@ -146,6 +151,64 @@
         }
 
         /**
+         * Method that inserts an Event and its corresponding attendees and species to the
+         * database. It does so by performing a transaction where all the data is inserted,
+         * and in case something fails, it makes a rollback.
+         */
+        public function insert(): void {
+            // Declaring the connection and the insert statement
+            $connection = null;
+            $insert = null;
+
+            try {
+                // Connecting to the Database and beginning a transaction
+                $connection = ReforestaDB::connectDB();
+                $connection->beginTransaction();
+            
+                // Preparing the insert statement of the Event
+                $insert = $connection->prepare('INSERT INTO events (name, host, description, province, locality, ' . 
+                'terrainType, date, bannerPicture, type) VALUES (:name, :host, :description, :province, :locality, ' .
+                ':terrainType, :date, :bannerPicture, :type)');
+
+                // Binding all the parameters
+                $insert->bindParam(':name', $this->name);
+                $hostId = $this->host->getId();
+                $insert->bindParam(':host', $hostId);
+                $insert->bindParam(':description', $this->description);
+                $insert->bindParam(':province', $this->province);
+                $insert->bindParam(':locality', $this->locality);
+                $insert->bindParam(':terrainType', $this->terrainType);
+                $insert->bindParam(':date', $this->date);
+                $insert->bindParam(':bannerPicture', $this->bannerPicture);
+                $insert->bindParam(':type', $this->type);
+
+                // Executing the statement
+                $connection->exec($insert);
+
+                // Inserting all attendees into usersInEvent
+                foreach($this->attendees as $attendee) {
+                    $this->insertAttendeeDB($attendee->id, $connection);
+                }
+                // Inserting all species into speciesInEvent
+                foreach($this->species as $specie) {
+                    $this->insertSpecieDB($specie->id, $connection);
+                }
+
+                // Commit of the transaction
+                $connection->commit();
+            } catch(Exception $e) {
+                echo "<p>Error en la BBDD al insertar el Evento: " . $e->getMessage() . "</p>";
+
+                // Rollback of the transaction
+                $connection->rollback();
+            } finally {
+                // Closing the connection and statement
+                $insert = null;
+                $connection = null;
+            }
+        }
+
+        /**
          * Method that deletes an Event and its corresponding attendees and species
          */
         public function delete(): bool {
@@ -187,7 +250,7 @@
                 $deleted = true;
             } catch(Exception $e) {
                 // Showing the error to the user in the most beautiful and convenient way!
-                echo "<p>Error en la BBDD al insertar Evento: " . $e->getMessage() . "</p>";
+                echo "<p>Error en la BBDD al eliminar el Evento: " . $e->getMessage() . "</p>";
 
                 // Rollback of the transaction
                 $connection->rollback();
@@ -202,158 +265,398 @@
             return $deleted;
         }
 
-        private function deleteAttendeeDB(int $idAttendee): void {
-            $connection = null;
-            $deletion = null;
-
-            try {
-                $connection = ReforestaDB::connectDB();
-
-                $deletion = $connection->prepare('DELETE FROM usersInEvent WHERE userId=:userId AND eventId=:eventId');
-                $deletion->bindParam(':userId', $idAttendee);
-                $deletion->bindParam(':eventId', $this->id);
-
-                $connection->exec($deletion);
-            } catch(PDOException $pdoe) {
-                
-            } catch(Exception $e) {
-                // Temporal hasta que veamos como mostrar errores
-                echo "<p>Error genérico al insertar Evento</p>";
-                echo "<p>" . $e->getMessage() . "</p>";
-            }
-
-            $insertion = null;
-            $connection = null;
-        }
-
-        private function deleteSpecieDB(int $idSpecie): void {
-
-        }
-
         /**
-         * Method that inserts an Event and its corresponding attendees and species to the
-         * database. It does so by performing a transaction where all the data is inserted,
-         * and in case something fails, it makes a rollback.
+         * Method that updates the info of an Event
          */
-        public function insert(): void {
-            $connection = ReforestaDB::connectDB();
-            
-            $insertion = $connection->prepare('INSERT INTO events (name, host, description, province, locality, ' . 
-            'terrainType, date, bannerPicture, type) VALUES (:name, :host, :description, :province, :locality, ' .
-            ':terrainType, :date, :bannerPicture, :type)');
-
-            $insertion->bindParam(':name', $this->name);
-            $hostId = $this->host->getId();
-            $insertion->bindParam(':host', $hostId);
-            $insertion->bindParam(':description', $this->description);
-            $insertion->bindParam(':province', $this->province);
-            $insertion->bindParam(':locality', $this->locality);
-            $insertion->bindParam(':terrainType', $this->terrainType);
-            $insertion->bindParam(':date', $this->date);
-            $insertion->bindParam(':bannerPicture', $this->bannerPicture);
-            $insertion->bindParam(':type', $this->type);
+        public function update(): void {
+            // Declaring the connection and the insert statement
+            $connection = null;
+            $update = null;
 
             try {
-                $connection->beginTransaction();
+                // Connecting to the Database
+                $connection = ReforestaDB::connectDB();
+            
+                // Preparing the update statement of the Event
+                $update = $connection->prepare('UPDATE events SET name=:name, host=:name, description=:description,'. 
+                ' province=:province, locality=:locality, terrainType=:terrainType, date=:date,' . 
+                ' bannerPicture=:bannerPicture, type=:type WHERE id=:id');
 
-                $connection->exec($insertion);
-                foreach($this->attendees as $attendee) {
-                    $this->insertAttendees($attendee->id);
-                }
-                foreach($this->species as $specie) {
-                    $this->insertSpecies($specie->id);
-                }
+                // Binding all the parameters
+                $update->bindParam(':name', $this->name);
+                $hostId = $this->host->getId();
+                $update->bindParam(':host', $hostId);
+                $update->bindParam(':description', $this->description);
+                $update->bindParam(':province', $this->province);
+                $update->bindParam(':locality', $this->locality);
+                $update->bindParam(':terrainType', $this->terrainType);
+                $update->bindParam(':date', $this->date);
+                $update->bindParam(':bannerPicture', $this->bannerPicture);
+                $update->bindParam(':type', $this->type);
+                $update->bindParam(':id', $this->id);
 
-                $connection->commit();
+                // Executing the statement
+                $connection->exec($update);
             } catch(Exception $e) {
-                // Temporal hasta que veamos como mostrar errores
-                echo "<p>Error genérico al insertar Evento</p>";
-                echo "<p>" . $e->getMessage() . "</p>";
+                echo "<p>Error en la BBDD al insertar el Evento: " . $e->getMessage() . "</p>";
+
+                // Rollback of the transaction
                 $connection->rollback();
             } finally {
-                $insertion = null;
+                // Closing the connection and statement
+                $update = null;
                 $connection = null;
             }
         }
 
-        private function insertAttendees(int $idAttendee): void {
-            $connection = ReforestaDB::connectDB();
-
-            $insertion = $connection->prepare('INSERT INTO usersInEvents (userId, eventId) VALUES (:userId, :eventId)');
-            $insertion->bindParam(':userId', $idAttendee);
-            $insertion->bindParam(':eventId', $this->id);
-
-            $connection->exec($insertion);
-            $insertion = null;
-            $connection = null;
-        }
-
-        private function insertSpecies(int $idSpecie): void {
-            $connection = ReforestaDB::connectDB();
-
-            $insertion = $connection->prepare('INSERT INTO speciesInEvents (specieId, eventId) VALUES (:specieId, :eventId)');
-            $insertion->bindParam(':specieId', $idSpecie);
-            $insertion->bindParam(':eventId', $this->id);
-
-            $connection->exec($insertion);
-            $insertion = null;
-            $connnection = null;
-        }
-
+        /**
+         * Method that gets all the Events from the database
+         */
         public static function getAll(): array {
-            $connection = ReforestaDB::connectDB();
-
-            $query = 'SELECT * FROM events';
-            $selection = $connection->query($query);
+            // Declaring the connection, the select statement and the array of events
+            $connection = null;
+            $select = null;
             $events = [];
 
-            while ($entry = $selection->fetchObject()) {
-                $events[] = Event::getById($entry->id);
+            try {
+                // Connecting to the database
+                $connection = ReforestaDB::connectDB();
+
+                // Declaring the select and executing it
+                $query = 'SELECT * FROM events';
+                $select = $connection->query($query);
+                $events = [];
+
+                // Looping through the result to add it to the events array
+                while ($entry = $select->fetchObject()) {
+                    // We add an Event to the array with our own method
+                    $events[] = Event::getById($entry->id);
+                }
+            } catch(Exception $e) {
+                // If we catch an Exception, we empty the array
+                $events = [];
+            } finally {
+                // Closing the connection and statement
+                $connection = null;
+                $select = null;
             }
 
-            $selection = null;
-            $connection = null;
+            // We return the array of events
             return $events; 
         }
 
-        public static function getById(int $id): Event {
-            $connection = ReforestaDB::connectDB();
-
-            // Getting the basic info
-            $query = $connection->prepare('SELECT * FROM events WHERE id=:id');
-            $selection = $connection->query($query);
-            $entry = $selection->fetchObject();
-
-            //$host = User::getById($entry->host);
-
-            $event = new Event($entry->name, $entry->description, $entry->province,
-            $entry->locality, $entry->terrainType, $entry->date, $entry->type,
-            $entry->host, $entry->bannerPicture, $entry->id);
-            $selection = null;
-
-            // Getting the attendees
-            $queryUsersInEvent = $connection->prepare('SELECT * FROM usersInEvent WHERE eventId=:eventId');
-            $queryUsersInEvent->bindParam(':eventId', $id);
-            $selectionAttendees = $connection->query($queryUsersInEvent);
-
-            while($entry = $selectionAttendees->fetchObject()) {
-                //$event->attendees[] = User::getById($entry->userId);
-            }
-            $selectionAttendees = null;
-
-            // Getting the species
-            $querySpeciesInEvent = $connection->prepare('SELECT * FROM speciesInEvent WHERE eventId=:eventId');
-            $querySpeciesInEvent->bindParam(':eventId', $id);
-            $selectionSpecies = $connection->query($querySpeciesInEvent);
-
-            while($entry = $selectionSpecies->fetchObject()) {
-                //$event->species[] = Specie::getById($entry->specieId);
-            }
-            $selectionSpecies = null;
-            
+        /**
+         * Method that gets a specific Event with an id passed through parameters
+         */
+        public static function getById(int $id): Event|null {
+            // Declaring the connection, selection statements and the returned event
+            $event = null;
             $connection = null;
+            $select = null;
+            $selectAttendees = null;
+            $selectSpecies = null;
+
+            try {
+                // Connecting to the database
+                $connection = ReforestaDB::connectDB();
+
+                // Getting the basic info
+                $select = $connection->prepare('SELECT * FROM events WHERE id=:id');
+                $select->bindParam(':id', $id);
+                $select->setFetchMode(PDO::FETCH_ASSOC);
+                $select->execute();
+
+                $entry = $select->fetch();
+
+                if ($entry != null) {
+                    $host = User::getById($entry['host']);
+
+                    // Creating the base Event
+                    $event = new Event($entry['name'], $entry['description'], $entry['province'],
+                    $entry['locality'], $entry['terrainType'], new DateTime($entry['date']), $entry['type'],
+                    $host, $entry['bannerPicture'], $entry['id']);
+
+                    // Getting the attendees
+                    $selectAttendees = $connection->prepare('SELECT * FROM usersInEvent WHERE eventId=:eventId');
+                    $selectAttendees->bindParam(':eventId', $id);
+                    $selectAttendees->setFetchMode(PDO::FETCH_ASSOC);
+                    $selectAttendees->execute();
+
+                    while($entry = $selectAttendees->fetch()) {
+                        $event->attendees[] = User::getById($entry['userId']);
+                    }
+
+                    // Getting the species
+                    $selectSpecies = $connection->prepare('SELECT * FROM speciesInEvent WHERE eventId=:eventId');
+                    $selectSpecies->bindParam(':eventId', $id);
+                    $selectSpecies->setFetchMode(PDO::FETCH_ASSOC);
+                    $selectSpecies->execute();
+
+                    while($entry = $selectSpecies->fetch()) {
+                        $event->species[] = Specie::getSpecie($entry['specieId']);
+                    }
+                }
+                
+            } catch(Exception $e) {
+                // If an exception is found, we empty the entire event
+                $event = null;
+            } finally {
+                // Closing the connection and statements
+                $connection = null;
+                $select = null;
+                $selectAttendees = null;
+                $selectSpecies = null;
+            }
 
             return $event;
         }
+
+        /**
+         * Method that gets an array of Events based on the name
+         */
+        public static function getByName(string $name): array {
+            // Declaring the connection, select statement and the array of Events
+            $connection = null;
+            $select = null;
+            $events = [];
+
+            try {
+                // Connecting to the database
+                $connection = ReforestaDB::connectDB();
+
+                // Preparing the select statement
+                $select = $connection->prepare('SELECT * FROM events WHERE name=:name');
+                $select->bindParam(':name', $name);
+                $select->setFetchMode(PDO::FETCH_ASSOC);
+                $select->execute();
+
+                // Looping through the result to add it to the events array
+                while ($entry = $select->fetch()) {
+                    // We add an Event to the array with our own method
+                    $events[] = Event::getById($entry->id);
+                }
+            } catch(Exception $e) {
+                // If an exception is found, we empty the array
+                $events = [];
+            } finally {
+                // Closing the connection and statements
+                $connection = null;
+                $select = null;
+            }
+
+            return $events;
+        }
+
+        /**
+         * Method that adds an Attendee to the event, both in the object and in the database
+         */
+        public function addAttendee(User $attendee): void {
+            // Declaring the connection
+            $connection = null;
+
+            try {
+                // Connecting to the database
+                $connection = ReforestaDB::connectDB();
+
+                // Using our method to add the attendee to the DB
+                $this->insertAttendeeDB($attendee->getId(), $connection);
+                // Adding the attendee at the end of our array
+                $this->attendees[] = $attendee;
+            } catch(Exception $e) {
+                echo "<p>Error añadiendo participante al Evento: " . $e->getMessage() . "</p>";
+            } finally{
+                // Closing the connection
+                $connection = null;
+            }
+        }
+
+        /**
+         * Method that removes an attendee from the Event
+         */
+        public function removeAttendee(User $attendee): void {
+            try {
+                // Using our method to remove the attendee from the DB
+                $this->deleteAttendeeDB($attendee->getId());
+
+                // Looping through the attendees array to remove it
+                $found = false;
+                $index = 0;
+                do {
+                    if ($this->attendees[$index]->getId() == $attendee->getId()) {
+                        $found = true;
+                        unset($this->attendees[$index]);
+                    }
+                    $index++;
+                } while(!$found);
+            } catch(Exception $e) {
+                echo "<p>Error eliminando participante del Evento: " . $e->getMessage() . "</p>";
+            }
+        }
+
+        /**
+         * Method that adds an specie to the Event
+         */
+        public function addSpecie(Specie $specie) {
+            // Declaring the connection
+            $connection = null;
+
+            try {
+                // Connecting to the database
+                $connection = ReforestaDB::connectDB();
+
+                // Using our own method to insert the specie to the DB
+                $this->insertSpecieDB($specie->getId(), $connection);
+                // Adding the specie to the array
+                $this->species[] = $specie;
+            } catch(Exception $e) {
+                echo "<p>Error añadiendo especie al Evento: " . $e->getMessage() . "</p>";
+            } finally{
+                // Closing the connection
+                $connection = null;
+            }
+        }
+
+        /**
+         * Method that removes an specie from the Event
+         */
+        public function removeSpecie(Specie $specie) {
+            try {
+                // Using our method to delete it from the DB
+                $this->deleteSpecieDB($specie->getId());
+
+                // Looping through the array to find and remove the specie
+                $found = false;
+                $index = 0;
+                do {
+                    if ($this->species[$index]->getId() == $specie->getId()) {
+                        $found = true;
+                        unset($this->species[$index]);
+                    }
+                    $index++;
+                } while(!$found);
+            } catch(Exception $e) {
+                echo "<p>Error eliminando especie del Evento: " . $e->getMessage() . "</p>";
+            }
+        }
+
+        /**
+         * Method that prints a card with the basic info of the Event
+         */
+        public function showCard(bool $loggedIn) {
+            ?>
+                <div class="event">
+                    <img src="../res/images/species/<?=$this->getBannerPicture();?>"
+                            alt="<?= $this->getBannerPicture() ?>">
+                    <div class="event-body">
+                        <h2><a href="<?= dirname(__DIR__) . '/controller/EventController.php?action=2&id=' . $this->getId();?>"><?=$this->getName();?></a></h2>
+                        <p><small><?= $this->getLocality() ?></small></p>
+                        <?php
+                            if ($loggedIn) {
+                                // TODO: Call some kind of "joinToEvent" method
+                                ?>
+                                <form action="#">
+                                    <input type="submit" value="Join Event" id="btnJoinEvent">
+                                </form>
+                                <?php
+                            }
+                        ?>
+                    </div>
+                </div>
+            <?php
+        }
+
+        /**
+         * Method that inserts an attendee into usersInEvents onto the DB
+         */
+        private function insertAttendeeDB(int $idAttendee, PDO $connection): void {
+            $insert = null;
+
+            try {
+                $insert = $connection->prepare('INSERT INTO usersInEvents (userId, eventId) VALUES (:userId, :eventId)');
+                $insert->bindParam(':userId', $idAttendee);
+                $insert->bindParam(':eventId', $this->id);
+    
+                $connection->exec($insert);
+            } catch(Exception $e) {
+                throw new Exception($e->getMessage());
+            } finally {
+                $insert = null;
+            }
+        }
+
+        /**
+         * Method that inserts a specie into speciesInEvents onto the DB
+         */
+        private function insertSpecieDB(int $idSpecie, PDO $connection): void {
+            $insert = null;
+
+            try {
+                $insert = $connection->prepare('INSERT INTO speciesInEvents (specieId, eventId) VALUES (:specieId, :eventId)');
+                $insert->bindParam(':specieId', $idSpecie);
+                $insert->bindParam(':eventId', $this->id);
+
+                $connection->exec($insert);
+            } catch(Exception $e) {
+                throw new Exception($e->getMessage());
+            } finally {
+                $insert = null;
+            }
+        }
+
+        /**
+         * Method that deletes an attendee from usersInEvents on the DB
+         */
+        private function deleteAttendeeDB(int $idAttendee): bool {
+            $connection = null;
+            $delete = null;
+            $deleted = false;
+
+            try {
+                $connection = ReforestaDB::connectDB();
+
+                $delete = $connection->prepare('DELETE FROM usersInEvent WHERE userId=:userId AND eventId=:eventId');
+                $delete->bindParam(':userId', $idAttendee);
+                $delete->bindParam(':eventId', $this->id);
+
+                $connection->exec($delete);
+                $deleted = true;
+            } catch(Exception $e) {
+                throw new Exception($e->getMessage());
+            } finally {
+                $delete = null;
+                $connection = null;
+            }
+
+            return $deleted;
+        }
+
+        /**
+         * Method that deletes a specie from speciesInEvents on the DB
+         */
+        private function deleteSpecieDB(int $idSpecie): bool {
+            $connection = null;
+            $delete = null;
+            $deleted = false;
+
+            try {
+                $connection = ReforestaDB::connectDB();
+
+                $delete = $connection->prepare('DELETE FROM speciesInEvent WHERE specieId=:userId AND eventId=:eventId');
+                $delete->bindParam(':specieId', $idSppecie);
+                $delete->bindParam(':eventId', $this->id);
+
+                $connection->exec($delete);
+                $deleted = true;
+            } catch(Exception $e) {
+                throw new Exception($e->getMessage());
+            } finally {
+                $delete = null;
+                $connection = null;
+            }
+
+            return $deleted;
+        }
     }
+
+    // If I have to write more code for this class, my will to live is going to disappear :)
 ?>

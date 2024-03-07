@@ -1,15 +1,17 @@
 <?php
 
     require_once("header.php");
-    require_once("../model/Event.php");
-    require_once("../model/User.php");
+    require_once dirname(__DIR__) . '/model/Event.php';
+    require_once dirname(__DIR__) . '/model/User.php';
     // TODO: Implement sessions functionality
     $loggedIn = true;
 
     // TODO: Fetch user from database
-    $user = new User(2, "Anaclet", "McJohnson", "anaclet@mc.johnson", "Anacletus", "123", "Anaclet's Avatar");
-    $user->setKarma(3);
+    // $user = new User(2, "Anaclet", "McJohnson", "anaclet@mc.johnson", "Anacletus", "123", "Anaclet's Avatar");
+    // $user->setKarma(3);
     //TODO: Load events
+
+    $events = Event::getAll();
 ?>
 
 <!-- Principal Content Start -->
@@ -30,32 +32,16 @@
         <h2>Events</h2>
         <div id="eventsContainer">
             <?php
-                // TODO: Fetch events from database
-                $events = [
-                    new Event("Event 1", "Description", "Province", "Locality", "Terrain type", new DateTime(), "Type", $user, "oak.png"),
-                    new Event("Event 2", "Description", "Province", "Locality", "Terrain type", new DateTime(), "Type", $user, "juniper.png"),
-                ];
+                // $events = [
+                //    new Event("Event 1", "Description", "Province", "Locality", "Terrain type", new DateTime(), "Type", $user, "oak.png"),
+                //     new Event("Event 2", "Description", "Province", "Locality", "Terrain type", new DateTime(), "Type", $user, "juniper.png"),
+                // ];
                 foreach ($events as $event) {
-                    ?>
-                    <div class="event">
-                        <img src="../res/images/species/<?= $event->getBannerPicture() ?>"
-                             alt="<?= $event->getBannerPicture() ?>">
-                        <div class="event-body">
-                            <h2><?= $event->getName() ?></h2>
-                            <p><small><?= $event->getLocality() ?></small></p>
-                            <?php
-                                if ($loggedIn) {
-                                    // TODO: Call some kind of "joinToEvent" method
-                                    ?>
-                                    <form action="#">
-                                        <input type="submit" value="Join Event" id="btnJoinEvent">
-                                    </form>
-                                    <?php
-                                }
-                            ?>
-                        </div>
-                    </div>
-                    <?php
+                    $event->showCard($loggedIn);
+                }
+
+                if (count($events) == 0) {
+                    echo "<p>No hay eventos! :(</p>";
                 }
             ?>
         </div>

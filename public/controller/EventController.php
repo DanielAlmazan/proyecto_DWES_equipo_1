@@ -1,50 +1,70 @@
 <?php
-    use Event;
+    require_once dirname(__DIR__) . '/model/Event.php';
+    require_once dirname(__DIR__) . '/model/User.php';
 
-    class EventController {
-        private array $events;
+    define('HOME_PATH', 'Location: http://' . $_SERVER['SERVER_NAME'] . '/index.php');
 
-        public function __construct(array $events) {
-            $this->events = $events;
+    function eventDetail() {
+        // Checking if there is an ID
+        if (empty($_GET['id'])) {
+            header(HOME_PATH);
+            exit();
         }
 
-        public function __get(string $property) {
-            switch ($property) {
-                case "events":
-                    return $this->events;
-            }
-        }
-
-        public function __set(string $property, $value) {
-            switch ($property) {
-                case "events":
-                    $this->events = $value;
-                    break;
-            }
-        }
-
-        public function addEvent(Event $newEvent): bool {
-            $this->events[] = $newEvent;
-            return true;
-        }
-
-        public function filterString(string $field, string $value): array {
-            return array_filter($this->events, function ($event) use ($field, $value) {
-                return $event->$field === $value;
-            });
-        }
-
-        public function filterDate(DateTime $date) {
-            return array_filter($this->events, function ($event) use ($date) {
-                return $event->date === $date;
-            });
-        }
-
-        /*
-        TODO 
-        - Filter by host once the User class is implemented
-        - Filter by approval
-        */
+        // Displaying the detail of the Event
+        header('Location: http://' . $_SERVER['SERVER_NAME'] . '/view/eventDetail.php?id=' . $_GET['id']);
+        exit();
     }
 
-    ?>
+    function saveEvent() {
+        if (
+            empty($_POST['name']) ||
+            empty($_POST['desciption']) ||
+            empty($_POST['province']) ||
+            empty($_POST['locality']) ||
+            empty($_POST['terrainType']) ||
+            empty($_POST['date']) ||
+            empty($_POST['type']) ||
+            empty($_POST['host'])
+        ) {
+            header(HOME_PATH);
+            exit();
+        }
+
+        $hostAux = User::getById($_POST['host']);
+
+        $eventAux = new Event(
+            $_POST['name'], 
+            $_POST['description'], 
+            $_POST['province'], 
+            $_POST['locality'], 
+            $_POST['terrainType'], 
+            $_POST['date'], 
+            $_POST['type'], 
+            User::getById($_POST['host']), 
+            ""
+        );
+
+        $eventAux->getAttendees()[] = $hostAux;
+        $eventAux->insert();
+    }
+
+    $action = 1;
+
+    if (isset($_GET['action']) && !empty($_GET['action'])) {
+        $action = $_GET['action'];
+    } 
+
+    switch($action) {
+        case 2:
+            // Detail of an Event
+            eventDetail();
+            break;
+        case 3:
+            break;
+        default:
+            // Displaying Home page
+            header(HOME_PATH);
+            break;
+    }
+?>
