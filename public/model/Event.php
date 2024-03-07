@@ -348,57 +348,64 @@
         /**
          * Method that gets a specific Event with an id passed through parameters
          */
-        public static function getById(int $id): Event {
+        public static function getById(int $id): Event|null {
             // Declaring the connection, selection statements and the returned event
             $event = null;
             $connection = null;
-            $selection = null;
-            $selectionAttendees = null;
-            $selectionSpecies = null;
+            $select = null;
+            $selectAttendees = null;
+            $selectSpecies = null;
 
             try {
                 // Connecting to the database
                 $connection = ReforestaDB::connectDB();
 
                 // Getting the basic info
-                $query = $connection->prepare('SELECT * FROM events WHERE id=:id');
-                $query->bindParam(':id', $id);
-                $selection = $connection->query($query);
-                $entry = $selection->fetchObject();
+                $select = $connection->prepare('SELECT * FROM events WHERE id=:id');
+                $select->bindParam(':id', $id);
+                $select->setFetchMode(PDO::FETCH_ASSOC);
+                $select->execute();
 
-                $host = User::getById($entry->host);
+                $entry = $select->fetch();
 
-                // Creating the base Event
-                $event = new Event($entry->name, $entry->description, $entry->province,
-                $entry->locality, $entry->terrainType, $entry->date, $entry->type,
-                $host, $entry->bannerPicture, $entry->id);
+                if ($entry != null) {
+                    $host = User::getById($entry['host']);
 
-                // Getting the attendees
-                $queryUsersInEvent = $connection->prepare('SELECT * FROM usersInEvent WHERE eventId=:eventId');
-                $queryUsersInEvent->bindParam(':eventId', $id);
-                $selectionAttendees = $connection->query($queryUsersInEvent);
+                    // Creating the base Event
+                    $event = new Event($entry['name'], $entry['description'], $entry['province'],
+                    $entry['locality'], $entry['terrainType'], new DateTime($entry['date']), $entry['type'],
+                    $host, $entry['bannerPicture'], $entry['id']);
 
-                while($entry = $selectionAttendees->fetchObject()) {
-                    $event->attendees[] = User::getById($entry->userId);
+                    // Getting the attendees
+                    $selectAttendees = $connection->prepare('SELECT * FROM usersInEvent WHERE eventId=:eventId');
+                    $selectAttendees->bindParam(':eventId', $id);
+                    $selectAttendees->setFetchMode(PDO::FETCH_ASSOC);
+                    $selectAttendees->execute();
+
+                    while($entry = $selectAttendees->fetch()) {
+                        $event->attendees[] = User::getById($entry['userId']);
+                    }
+
+                    // Getting the species
+                    $selectSpecies = $connection->prepare('SELECT * FROM speciesInEvent WHERE eventId=:eventId');
+                    $selectSpecies->bindParam(':eventId', $id);
+                    $selectSpecies->setFetchMode(PDO::FETCH_ASSOC);
+                    $selectSpecies->execute();
+
+                    while($entry = $selectSpecies->fetch()) {
+                        $event->species[] = Specie::getSpecie($entry['specieId']);
+                    }
                 }
-
-                // Getting the species
-                $querySpeciesInEvent = $connection->prepare('SELECT * FROM speciesInEvent WHERE eventId=:eventId');
-                $querySpeciesInEvent->bindParam(':eventId', $id);
-                $selectionSpecies = $connection->query($querySpeciesInEvent);
-
-                while($entry = $selectionSpecies->fetchObject()) {
-                    $event->species[] = Specie::getSpecie($entry->specieId);
-                }
+                
             } catch(Exception $e) {
                 // If an exception is found, we empty the entire event
                 $event = null;
             } finally {
                 // Closing the connection and statements
                 $connection = null;
-                $selection = null;
-                $selectionAttendees = null;
-                $selectionSpecies = null;
+                $select = null;
+                $selectAttendees = null;
+                $selectSpecies = null;
             }
 
             return $event;
@@ -420,11 +427,11 @@
                 // Preparing the select statement
                 $select = $connection->prepare('SELECT * FROM events WHERE name=:name');
                 $select->bindParam(':name', $name);
-
-                $results = $connection->query($select);
+                $select->setFetchMode(PDO::FETCH_ASSOC);
+                $select->execute();
 
                 // Looping through the result to add it to the events array
-                while ($entry = $results->fetchObject()) {
+                while ($entry = $select->fetch()) {
                     // We add an Event to the array with our own method
                     $events[] = Event::getById($entry->id);
                 }
@@ -532,13 +539,16 @@
             }
         }
 
+        /**
+         * Method that prints a card with the basic info of the Event
+         */
         public function showCard(bool $loggedIn) {
             ?>
                 <div class="event">
-                    <img src="../res/images/species/<?= $this->getBannerPicture() ?>"
+                    <img src="../res/images/species/<?=$this->getBannerPicture();?>"
                             alt="<?= $this->getBannerPicture() ?>">
                     <div class="event-body">
-                        <h2><?= $this->getName() ?></h2>
+                        <h2><a href="<?= dirname(__DIR__) . '/controller/EventController.php?action=2&id=' . $this->getId();?>"><?=$this->getName();?></a></h2>
                         <p><small><?= $this->getLocality() ?></small></p>
                         <?php
                             if ($loggedIn) {
