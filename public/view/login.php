@@ -1,17 +1,20 @@
 <?php
+    session_start();
+    
     if (!empty($_POST["email"]) && !empty($_POST["pass"])) {
         require_once("../model/User.php");
-        require_once("../DB/ReforestaDB.php");
+        require_once("../controller/UserController.php");
         
-        $email = $_POST["email"];
-        $password = $_POST["pass"];
+        $email = filter_var(trim($_POST["email"]), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $password = filter_var(trim($_POST["pass"]), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        
         $user = User::getByLogin($email, $password);
         
         if ($user) {
-            $_SESSION["userId"] = $user->getId();
+            login($user);
             header("Location: home.php");
         } else {
-            echo "Invalid email or password";
+            echo "<p class='error'>Invalid email or password</p>";
         }
     }
     $pageTitle = "Login";
@@ -28,10 +31,9 @@
         <input type="password" name="pass" placeholder="Write your password...">
     </label>
     <button>LOGIN</button>
-    <!-- TODO: Add register button -->
 </form>
 
-<a id="fakeRegisterButton" href="register.php">REGISTER</a>
+<a id="button" href="register.php">REGISTER</a>
 <?php
     require_once("footer.php");
 ?>

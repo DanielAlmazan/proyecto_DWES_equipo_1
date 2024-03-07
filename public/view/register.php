@@ -1,4 +1,8 @@
 <?php
+	session_start();
+    if(isset($_SESSION['userId'])) {
+        header("Location: home.php");
+    }
     $pageTitle = "Register";
     require_once("header.php");
 ?>

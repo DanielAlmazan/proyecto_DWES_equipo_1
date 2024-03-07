@@ -3,19 +3,15 @@
     require_once("../model/User.php");
     require_once("../controller/UserController.php");
 
-    $loggedIn = false;
-    if(isset($_SESSION['user'])) {
-        $loggedIn = true;
-        $user = User::getById($_SESSION['user']);
-    }
-
-    // If user's not logged in, we'll redirect to login page
-    if (!$loggedIn) {
+    if(isset($_SESSION['userId'])) {
+        $user = User::getById($_SESSION['userId']);
+    } else {
+        // If user's not logged in, we'll redirect to login page
         header("Location: login.php");
         die();
-    // If user's logged in, we'll show it's relevant info and offer the option for editing it
     }
-    
+
+    // If user's logged in, we'll show it's relevant info and offer the option for editing it    
     require_once("header.php");
 ?>
 <main>

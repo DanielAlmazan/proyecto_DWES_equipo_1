@@ -6,7 +6,7 @@
         "home.php",
         "user.php",
         "about.php",
-        "blog.php",
+        // "blog.php",
         "contact.php",
         "our_species.php",
         "achievements.php",
@@ -17,10 +17,10 @@
         $fileNames[0] => "Home",
         $fileNames[1] => "User",
         $fileNames[2] => "About",
-        $fileNames[3] => "Blog",
-        $fileNames[4] => "Contact",
-        $fileNames[5] => "Our Species",
-        $fileNames[6] => "Achievements",
+        // $fileNames[3] => "Blog",
+        $fileNames[3] => "Contact",
+        $fileNames[4] => "Our Species",
+        $fileNames[5] => "Achievements",
     ];
 
     // This array is used to create the icons
@@ -29,10 +29,10 @@
         $fileNames[0] => "home",
         $fileNames[1] => "user",
         $fileNames[2] => "bookmark",
-        $fileNames[3] => "file-text",
-        $fileNames[4] => "phone",
-        $fileNames[5] => "tree",
-        $fileNames[6] => "trophy"
+        // $fileNames[3] => "file-text",
+        $fileNames[3] => "phone",
+        $fileNames[4] => "tree",
+        $fileNames[5] => "trophy"
     ];
 
     $fileName = basename($_SERVER["PHP_SELF"]);
@@ -97,7 +97,11 @@
                         // The $title variable is used to create the text inside the <a> tag
                         // The $faIcons array is used to create the icons
                 ?>
-                <li class='<?=$active?>'><a href='<?=$fileName?>'><i class="sr-icons fa  fa-<?=$faIcons[$fileName]?>"></i> <?=$title?></a></li>
+                <li class='<?=$active?>'><a href='<?=$fileName?>'><i class="sr-icons fa fa-<?=$faIcons[$fileName]?>"></i> <?=$title?></a></li>
+                <?php } 
+                    if(isset($_SESSION['userId'])) {
+                ?>
+                <li><a href='logout.php'><i class="sr-icons fa fa-sign-out"></i> Logout</a></li>
                 <?php } ?>
             </ul>
         </div>

@@ -1,4 +1,5 @@
 <?php
+	session_start();
     $pageTitle = "Edit Profile";
     require_once("header.php");
 ?>

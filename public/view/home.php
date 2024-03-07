@@ -1,5 +1,5 @@
 <?php
-
+	session_start();
     require_once("header.php");
     require_once dirname(__DIR__) . '/model/Event.php';
     require_once dirname(__DIR__) . '/model/User.php';
