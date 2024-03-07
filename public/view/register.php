@@ -6,7 +6,16 @@
     }
 
     if(isset($_POST["submit"])) {
-        // register();
+        if(!empty($_POST["pass1"]) && !empty($_POST["pass2"]) &&
+            $_POST["pass1"] == $_POST["pass2"]) {
+            if(!register())
+                echo "<p class='alert alert-danger'>Se deben rellenar todos los campos</p>";
+            else {
+                header("Location: home.php");
+                die();
+            }
+        } else
+            echo "<p class='alert alert-danger'>Las contraseñas no coinciden</p>";
     }
 
     $pageTitle = "Register";
@@ -45,7 +54,7 @@
             </div>
             <div class="form-group mb-3">
                 <label for="avatar" class="form-label">Avatar</label>
-                <input type="file" name="avatar" class="form-control" accept="image/*">
+                <input type="file" name="avatar" accept="image/*">
             </div>
             <input type="submit" name="submit" class="btn btn-primary mb-3" value="Register">
         </form>
