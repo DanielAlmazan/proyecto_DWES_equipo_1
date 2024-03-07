@@ -1,4 +1,33 @@
 <?php
+    function register() {
+        require_once('../model/User.php');
+        $success = false;
+        
+        if (
+            !empty($_POST['name']) &&
+            !empty($_POST['surname']) && 
+            !empty($_POST['email']) &&
+            !empty($_POST['nickname']) &&
+            !empty($_FILES['avatar'])) {
+            
+            $avatar = checkAvatar();
+            if($avatar != null) {
+                $user = new User(
+                    $_POST['name'],
+                    $_POST['surname'],
+                    $_POST['email'],
+                    $_POST['nickname'],
+                    $_POST['password'],
+                    $avatar
+                );
+                $user->insert();
+                $success = true;
+            }
+        }
+        
+        return $success;
+    }
+    
     function login(User $user) {
         $_SESSION['userId'] = $user->getId();
         if(User::checkAdmin($user)) {
