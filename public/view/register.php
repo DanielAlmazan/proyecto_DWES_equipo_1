@@ -16,16 +16,16 @@
         <input type="text" name="nickname" placeholder="Write your nickname...">
     </label>
     <label>Email
-        <input type="email" name="" placeholder="Write your email...">
+        <input type="email" name="email" placeholder="Write your email...">
     </label>
     <label>Password
-        <input type="password" name="" placeholder="Write your password...">
+        <input type="password" name="pass1" placeholder="Write your password...">
     </label>
     <label>Confirm Password
-        <input type="password" name="" placeholder="Confirm your password...">
+        <input type="password" name="pass2" placeholder="Confirm your password...">
     </label>
     <label>Avatar
-        <input type="file" name="" accept="image/*">
+        <input type="file" name="avatar" accept="image/*">
     </label>
     <button type="submit">REGISTER</button>
 </form>

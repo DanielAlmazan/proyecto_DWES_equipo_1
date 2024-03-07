@@ -256,6 +256,41 @@
 
 			return $user;
 		}
+        
+        static function getByLogin(string $email, string $password) {
+            $user = null;
+            
+            try {
+                $pdo = ReforestaDB::connectDB();
+                $sql = "SELECT * FROM users WHERE email=:email AND password=:password";
+                $select = $pdo->prepare($sql);
+                
+                // Bind params
+                $select->bindParam(":email", $email);
+                $select->bindParam(":password", $password);
+                
+                $select->execute();
+                if($result = $select->fetch()) {
+                    $user = new User(
+                        $result['name'], 
+                        $result['surnames'], 
+                        $result['email'], 
+                        $result['nickname'],
+                        $result['password'], 
+                        $result['avatar'],
+                        $result['karma'],
+                        $result['id']
+                    );
+                }
+            } catch(Exception $e) {
+                echo "<p class='error'>" . $e->getMessage(). "</p>";
+            } finally {
+                $select = null;
+                $pdo = null;
+            }
+            
+            return $user;
+        }
 
 		static function suscribeNewsletter(string $email) {
 			$correct = false;
