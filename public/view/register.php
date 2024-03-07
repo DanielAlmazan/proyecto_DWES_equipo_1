@@ -1,39 +1,56 @@
 <?php
 	session_start();
+    require_once("../controller/UserController.php");
     if(isset($_SESSION['userId'])) {
         header("Location: home.php");
     }
+
+    if(isset($_POST["submit"])) {
+        // register();
+    }
+
     $pageTitle = "Register";
     require_once("header.php");
 ?>
 
-<h1>REGISTER</h1>
-
-<form action="<?= $_SERVER['PHP_SELF'] ?>" method="post" id="registerForm" class="form">
-    <label>Name
-        <input type="text" name="name" placeholder="Write your name...">
-    </label>
-    <label>Surnames
-        <input type="text" name="surnames" placeholder="Write your surnames...">
-    </label>
-    <label>Nickname
-        <input type="text" name="nickname" placeholder="Write your nickname...">
-    </label>
-    <label>Email
-        <input type="email" name="email" placeholder="Write your email...">
-    </label>
-    <label>Password
-        <input type="password" name="pass1" placeholder="Write your password...">
-    </label>
-    <label>Confirm Password
-        <input type="password" name="pass2" placeholder="Confirm your password...">
-    </label>
-    <label>Avatar
-        <input type="file" name="avatar" accept="image/*">
-    </label>
-    <button type="submit">REGISTER</button>
-</form>
-
+<div class="container">
+    <div class="row">
+        <h1>Register</h1>
+    </div>
+    <div class="row">
+        <form action="<?= $_SERVER['PHP_SELF'] ?>" method="post">
+            <div class="form-group mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" name="name" class="form-control" placeholder="Write your name...">
+            </div>
+            <div class="form-group mb-3">
+                <label for="surname" class="form-label">Surname</label>
+                <input type="text" name="surnames" class="form-control" placeholder="Write your surnames...">
+            </div>
+            <div class="form-group mb-3">
+                <label for="nickname" class="form-label">Nickname</label>
+                <input type="text" name="nickname" class="form-control" placeholder="Write your nickname...">
+            </div>
+            <div class="form-group mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="text" class="form-control" name="email" placeholder="Write your email...">
+            </div>
+            <div class="form-group mb-3">
+                <label for="pass1" class="form-label">Password</label>
+                <input type="password" class="form-control" name="pass1" placeholder="Write your password...">
+            </div>
+            <div class="form-group mb-3">
+                <label for="pass2" class="form-label">Confirm password</label>
+                <input type="password" name="pass2" class="form-control" placeholder="Confirm your password...">
+            </div>
+            <div class="form-group mb-3">
+                <label for="avatar" class="form-label">Avatar</label>
+                <input type="file" name="avatar" class="form-control" accept="image/*">
+            </div>
+            <input type="submit" name="submit" class="btn btn-primary mb-3" value="Register">
+        </form>
+    </div>
+</div>
 <?php
     require_once("footer.php");
 ?>
