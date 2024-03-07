@@ -116,7 +116,7 @@
 					}
 				}
 			} catch(Exception $e) {
-				echo "<p class='error'>" . $e->getMessage(). "</p>";
+				echo "<p class='alert alert-danger'>" . $e->getMessage(). "</p>";
 			} finally {
 				$insert = null;
 				$pdo = null;
@@ -146,7 +146,7 @@
 
 				$correct = $update->execute();
 			} catch(Exception $e) {
-				echo "<p class='error'>" . $e->getMessage(). "</p>";
+				echo "<p class='alert alert-danger'>" . $e->getMessage(). "</p>";
 			} finally {
 				$update = null;
 				$pdo = null;
@@ -167,7 +167,7 @@
 
 				$update->execute();
 			} catch(Exception $e) {
-				echo "<p class='error'>" . $e->getMessage(). "</p>";
+				echo "<p class='alert alert-danger'>" . $e->getMessage(). "</p>";
 			} finally {
 				$update = null;
 				$pdo = null;
@@ -187,7 +187,7 @@
 
 				$correct = $delete->execute();
 			} catch(Exception $e) {
-				echo "<p class='error'>" . $e->getMessage(). "</p>";
+				echo "<p class='alert alert-danger'>" . $e->getMessage(). "</p>";
 			} finally {
 				$delete = null;
 				$pdo = null;
@@ -218,7 +218,7 @@
 					);
 				}
 			} catch(Exception $e) {
-				echo "<p class='error'>" . $e->getMessage(). "</p>";
+				echo "<p class='alert alert-danger'>" . $e->getMessage(). "</p>";
 			} finally {
 				$select = null;
 				$pdo = null;
@@ -252,7 +252,7 @@
 					);
 				}
 			} catch(Exception $e) {
-				echo "<p class='error'>" . $e->getMessage(). "</p>";
+				echo "<p class='alert alert-danger'>" . $e->getMessage(). "</p>";
 			} finally {
 				$select = null;
 				$pdo = null;
@@ -288,7 +288,7 @@
                     );
                 }
             } catch(Exception $e) {
-                echo "<p class='error'>" . $e->getMessage(). "</p>";
+                echo "<p class='alert alert-danger'>" . $e->getMessage(). "</p>";
             } finally {
                 $select = null;
                 $pdo = null;
@@ -314,7 +314,7 @@
                     $correctAdmin = true;
                 }
             } catch(Exception $e) {
-                echo "<p class='error'>" . $e->getMessage(). "</p>";
+                echo "<p class='alert alert-danger'>" . $e->getMessage(). "</p>";
             } finally {
                 $select = null;
                 $pdo = null;
@@ -336,7 +336,7 @@
 				
 				$correct = $insert->execute();
 			} catch(Exception $e) {
-				echo "<p class='error'>" . $e->getMessage(). "</p>";
+				echo "<p class='alert alert-danger'>" . $e->getMessage(). "</p>";
 			} finally {
 				$insert = null;
 				$pdo = null;
@@ -367,7 +367,7 @@
 					$correct = $delete->execute();
 				}
 			} catch(Exception $e) {
-				echo "<p class='error'>" . $e->getMessage(). "</p>";
+				echo "<p class='alert alert-danger'>" . $e->getMessage(). "</p>";
 			} finally {
 				$select = null;
 				$delete = null;

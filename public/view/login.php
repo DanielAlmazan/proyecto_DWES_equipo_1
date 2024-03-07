@@ -14,7 +14,7 @@
             login($user);
             header("Location: home.php");
         } else {
-            echo "<p class='error'>Invalid email or password</p>";
+            echo "<p class='alert alert-danger'>Email o contraseña inválidos</p>";
         }
     }
     $pageTitle = "Login";
