@@ -1,4 +1,5 @@
 <?php
+session_start();
 $pageTitle = "Add Event";
 require_once("header.php");
 ?>

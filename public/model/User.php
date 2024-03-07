@@ -1,4 +1,6 @@
 <?php
+	require_once "../DB/ReforestaDB.php";
+
     class User {
         private int $id;
         private string $name;
@@ -85,6 +87,7 @@
 
         function insert() {
 			$correct = false;
+			$passHash = hash('sha256', $this->password);
 
 			try {
 				$pdo = ReforestaDB::connectDB();
@@ -97,7 +100,7 @@
 				$insert->bindParam(":surnames", $this->surnames);
 				$insert->bindParam(":email", $this->email);
 				$insert->bindParam(":nickname", $this->nickName);
-				$insert->bindParam(":password", $this->password);
+				$insert->bindParam(":password", $passHash);
 				$insert->bindParam(":avatar", $this->avatar);
 				
 				if($correct = $insert->execute()) {
@@ -109,7 +112,7 @@
 
 					$select->execute();
 					if($result = $select->fetch()) {
-						$this->id = $result->id;
+						$this->id = $result['id'];
 					}
 				}
 			} catch(Exception $e) {
@@ -124,6 +127,7 @@
 		
 		function update() {
 			$correct = false;
+			$passHash = hash('sha256', $this->password);
 			
 			try {
 				$pdo = ReforestaDB::connectDB();
@@ -136,7 +140,7 @@
 				$update->bindParam(":surnames", $this->surnames);
 				$update->bindParam(":email", $this->email);
 				$update->bindParam(":nickname", $this->nickName);
-				$update->bindParam(":password", $this->password);
+				$update->bindParam(":password", $passHash);
 				$update->bindParam(":avatar", $this->avatar);
 				$update->bindParam(":id", $this->id);
 
@@ -259,6 +263,7 @@
         
         static function getByLogin(string $email, string $password) {
             $user = null;
+			$passHash = hash('sha256', $password);
             
             try {
                 $pdo = ReforestaDB::connectDB();
@@ -267,7 +272,7 @@
                 
                 // Bind params
                 $select->bindParam(":email", $email);
-                $select->bindParam(":password", $password);
+                $select->bindParam(":password", $passHash);
                 
                 $select->execute();
                 if($result = $select->fetch()) {
@@ -290,6 +295,32 @@
             }
             
             return $user;
+        }
+
+		static function checkAdmin(User $user) {
+            $correctAdmin = false;
+			$id = $user->getId();
+            
+            try {
+                $pdo = ReforestaDB::connectDB();
+                $sql = "SELECT * FROM admins WHERE id=:id";
+                $select = $pdo->prepare($sql);
+                
+                // Bind params
+                $select->bindParam(":id", $id);
+                
+                $select->execute();
+                if($select->fetch()) {
+                    $correctAdmin = true;
+                }
+            } catch(Exception $e) {
+                echo "<p class='error'>" . $e->getMessage(). "</p>";
+            } finally {
+                $select = null;
+                $pdo = null;
+            }
+            
+            return $correctAdmin;
         }
 
 		static function suscribeNewsletter(string $email) {

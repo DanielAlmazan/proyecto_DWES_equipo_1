@@ -1,11 +1,18 @@
 <?php
-    function logIn(User $user) {
-        $_SESSION['user'] = $user->getId();
+    function login(User $user) {
+        $_SESSION['userId'] = $user->getId();
+        if(User::checkAdmin($user)) {
+            $_SESSION['admin'] = true;
+        }
     }
 
-    function logOut() {
-        if(isset($_SESSION['user'])) {
-            unset($_SESSION['user']);
+    function logout() {
+        if(isset($_SESSION['userId'])) {
+            unset($_SESSION['userId']);
+
+            if(isset($_SESSION['admin'])) 
+                unset($_SESSION['admin']);
+            
             session_destroy();
         }
     }

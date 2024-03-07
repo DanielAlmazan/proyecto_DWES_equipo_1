@@ -82,9 +82,13 @@ CREATE TABLE newsletterSubscribers
 
 -- USERS --
 INSERT INTO users (name, surnames, email, nickname, password, avatar)
-VALUES ('Miguel', 'Collado', 'mig@gmail.es', 'mike', '1234', 'client2.jpg'),
-       ('Lucia', 'Rodriguez', 'luci@gmail.es', 'luciRod', 'luci', 'client1.jpg'),
-       ('Anacletus', 'McJohnson', '1', 'Er AnAkLeTus', '1', 'analisto.png');
+VALUES ('Miguel', 'Collado', 'mig@gmail.com', 'mike', '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4', 'client2.jpg'),
+       ('Lucia', 'Rodriguez', 'luci@gmail.com', 'luciRod', '2fdcbc8615c275ffbe49106cf85fbab1566b92559a251a5535a217f211dfa3f2', 'client1.jpg'),
+       ('Anacletus', 'McJohnson', '1', 'Er AnAkLeTus', '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b', 'analisto.png');
+-- DEFAULT PASSWORDS:
+-- Miguel: 1234
+-- Lucia: luci
+-- Anacletus: 1
 
 -- ADMIN --
 INSERT INTO admins (id)
