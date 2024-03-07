@@ -203,14 +203,14 @@
 				$select->execute();
 				while ($user = $select->fetch()) {
 					$users[] = new User(
-						$user->name,
-						$user->surenames,
-						$user->email,
-						$user->nickName,
-						$user->password,
-						$user->avatar,
-						$user->karma,
-						$user->id
+						$user['name'],
+						$user['surnames'],
+						$user['email'],
+						$user['nickname'],
+						$user['password'],
+						$user['avatar'],
+						$user['karma'],
+						$user['id']
 					);
 				}
 			} catch(Exception $e) {
@@ -237,14 +237,14 @@
 				$select->execute();
 				if($result = $select->fetch()) {
 					$user = new User(
-						$result->name, 
-						$result->surnames, 
-						$result->email, 
-						$result->nickName,
-						$result->password, 
-						$result->avatar,
-						$result->karma,
-						$result->id
+						$result['name'],
+						$result['surnames'],
+						$result['email'],
+						$result['nickname'],
+						$result['password'],
+						$result['avatar'],
+						$result['karma'],
+						$result['id']
 					);
 				}
 			} catch(Exception $e) {
