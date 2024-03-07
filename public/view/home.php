@@ -1,14 +1,14 @@
 <?php
 
     require_once("header.php");
-    require_once("../model/Event.php");
-    require_once("../model/User.php");
+    require_once dirname(__DIR__) . '/model/Event.php';
+    require_once dirname(__DIR__) . '/model/User.php';
     // TODO: Implement sessions functionality
     $loggedIn = true;
 
     // TODO: Fetch user from database
-    $user = new User(2, "Anaclet", "McJohnson", "anaclet@mc.johnson", "Anacletus", "123", "Anaclet's Avatar");
-    $user->setKarma(3);
+    // $user = new User(2, "Anaclet", "McJohnson", "anaclet@mc.johnson", "Anacletus", "123", "Anaclet's Avatar");
+    // $user->setKarma(3);
     //TODO: Load events
 
     $events = Event::getAll();
