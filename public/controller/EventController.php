@@ -1,19 +1,19 @@
 <?php
-    require_once dirname(__DIR__) . 'model/Event.php';
-    require_once dirname(__DIR__) . 'model/User.php';
+    require_once dirname(__DIR__) . '/model/Event.php';
+    require_once dirname(__DIR__) . '/model/User.php';
+
+    define('HOME_PATH', 'Location: http://' . $_SERVER['SERVER_NAME'] . '/index.php');
 
     function eventDetail() {
         // Checking if there is an ID
         if (empty($_GET['id'])) {
-            header('Location: http://' . $_SERVER['SERVER_NAME'] . '/index.php');
+            header(HOME_PATH);
             exit();
         }
 
-        $eventId = $_GET['id'];
-        // Getting the Event
-        $data['event'] = Event::getById($eventId);
         // Displaying the detail of the Event
-        require_once dirname(__DIR__) . 'view/eventDetail.php';
+        header('Location: http://' . $_SERVER['SERVER_NAME'] . '/view/eventDetail.php?id=' . $_GET['id']);
+        exit();
     }
 
     function saveEvent() {
@@ -27,7 +27,7 @@
             empty($_POST['type']) ||
             empty($_POST['host'])
         ) {
-            header('Location: http://' . $_SERVER['SERVER_NAME'] . '/index.php');
+            header(HOME_PATH);
             exit();
         }
 
@@ -45,14 +45,14 @@
             ""
         );
 
-        $eventAux->addAttendee($hostAux);
+        $eventAux->getAttendees()[] = $hostAux;
         $eventAux->insert();
     }
 
     $action = 1;
 
-    if (isset($_GET['accion']) && !empty($_GET['accion'])) {
-        $action = $_GET['accion'];
+    if (isset($_GET['action']) && !empty($_GET['action'])) {
+        $action = $_GET['action'];
     } 
 
     switch($action) {
@@ -64,7 +64,7 @@
             break;
         default:
             // Displaying Home page
-            require_once dirname(__DIR__) . 'view/home.php';
+            header(HOME_PATH);
             break;
     }
 ?>
