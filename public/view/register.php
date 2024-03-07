@@ -27,13 +27,13 @@
         <h1>Register</h1>
     </div>
     <div class="row">
-        <form action="<?= $_SERVER['PHP_SELF'] ?>" method="post">
+        <form action="<?= $_SERVER['PHP_SELF'] ?>" method="post" enctype="multipart/form-data">
             <div class="form-group mb-3">
                 <label for="name" class="form-label">Name</label>
                 <input type="text" name="name" class="form-control" placeholder="Write your name...">
             </div>
             <div class="form-group mb-3">
-                <label for="surname" class="form-label">Surname</label>
+                <label for="surnames" class="form-label">Surname</label>
                 <input type="text" name="surnames" class="form-control" placeholder="Write your surnames...">
             </div>
             <div class="form-group mb-3">
@@ -42,7 +42,7 @@
             </div>
             <div class="form-group mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="text" class="form-control" name="email" placeholder="Write your email...">
+                <input type="email" class="form-control" name="email" placeholder="Write your email...">
             </div>
             <div class="form-group mb-3">
                 <label for="pass1" class="form-label">Password</label>
