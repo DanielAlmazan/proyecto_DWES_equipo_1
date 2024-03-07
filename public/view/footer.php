@@ -3,8 +3,8 @@
      <div class="container text-muted text-center">
        <div class="row">
          <ul class="nav col-sm-4">
-           <li class="footer-number"><i class="fa fa-phone sr-icons"></i>  (00228)92229954 </li>
-           <li><i class="fa fa-envelope sr-icons"></i>  kouvenceslas93@gmail.com</li>
+           <li class="footer-number"><i class="fa fa-phone sr-icons"></i>  +34666666666 </li>
+           <li><i class="fa fa-envelope sr-icons"></i>  reforesta@gmail.com</li>
            <li>Better ask our client</li>
          </ul>
          <ul class="list-inline social-buttons col-sm-4 col-sm-push-4">

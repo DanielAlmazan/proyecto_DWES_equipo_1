@@ -81,7 +81,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand page-scroll" href="home.php">
-                <img src="../res/images/logo/logo.JPG" alt="logo">
+                <img id="logo" src="../res/images/logo/logo.png" alt="logo">
             </a>
         </div>
         <div class="collapse navbar-collapse navbar-right" id="menu">
