@@ -224,3 +224,14 @@ body {
     width: 90%;
     padding: 20px;
 }
+
+.specieCard {
+    box-shadow: 0 .25rem 1rem #000000;
+    border-radius: 1rem;
+    margin: 1rem;
+    padding: 0;
+    
+    img {
+        width: 100%;
+    }
+}
