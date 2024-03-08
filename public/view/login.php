@@ -29,17 +29,17 @@
         <form action="<?= $_SERVER['PHP_SELF'] ?>" method="post">
             <div class="form-group mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="text" class="form-control" name="email" placeholder="Write your email...">
+                <input type="text" class="form-control" name="email" placeholder="Escribe tu email...">
             </div>
             <div class="form-group mb-3">
-                <label for="email" class="form-label">Password</label>
-                <input type="password" class="form-control" name="pass" placeholder="Write your password...">
+                <label for="email" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" name="pass" placeholder="Escribe tu contraseña...">
             </div>
             <input type="submit" class="btn btn-primary mb-3" value="Login">
         </form>
     </div>
     <div class="row">
-        <a class="btn btn-success" role="button" id="registerBtn" href="register.php">Register</a>
+        <a class="btn btn-success" role="button" id="registerBtn" href="register.php">Crear cuenta</a>
     </div>
 </div>
 <?php

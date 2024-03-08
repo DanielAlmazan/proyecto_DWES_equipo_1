@@ -1,25 +1,23 @@
 <?php
+    require_once('../model/User.php');
+
     function register() {
-        require_once('../model/User.php');
         $success = false;
 
-        if (
-            !empty($_POST['name']) &&
+        if (!empty($_POST['name']) &&
             !empty($_POST['surnames']) && 
             !empty($_POST['email']) &&
             !empty($_POST['nickname']) &&
-            !empty($_FILE['avatar']['name'])) {
-            echo "adios";
+            !empty($_FILES['avatar'])) {
             
             $avatar = checkAvatar();
-            echo "hola";
             if($avatar != null) {
                 $user = new User(
                     $_POST['name'],
                     $_POST['surnames'],
                     $_POST['email'],
                     $_POST['nickname'],
-                    $_POST['password'],
+                    $_POST['pass1'],
                     $avatar
                 );
                 $success = $user->insert();
@@ -37,7 +35,7 @@
             // Asignamos un id unico para no sobreescribir fotos con el mismo nombre
             $timestamp = time();
             $nameFile = $timestamp . "-" . $_FILES['avatar']['name'];
-            move_uploaded_file ($_FILES['foto']['tmp_name'], $nameDir .
+            move_uploaded_file ($_FILES['avatar']['tmp_name'], $nameDir .
                 $nameFile);
             $name = $nameFile;
         } 
@@ -68,11 +66,6 @@
 
     function logout() {
         if(isset($_SESSION['userId'])) {
-            unset($_SESSION['userId']);
-
-            if(isset($_SESSION['admin'])) 
-                unset($_SESSION['admin']);
-            
             session_destroy();
         }
     }
@@ -84,7 +77,39 @@
         }
     }
 
-    function editProfile(User $user) {
-        $user->update();
+    function editProfile() {
+        $success = false;
+        $user = User::getById($_SESSION['userId']);
+
+        if (!empty($_POST['name']) &&
+            !empty($_POST['surnames']) && 
+            !empty($_POST['email']) &&
+            !empty($_POST['nickname'])) {
+            
+            $user->setName($_POST['name']);
+            $user->setSurnames($_POST['surnames']);
+            $user->setEmail($_POST['email']);
+            $user->setNickName($_POST['nickname']);
+            $user->setPassword($_POST['pass1']);
+
+            $success = $user->update();
+        }
+        
+        return $success;
+    }
+
+    function changeAvatar() {
+        $success = false;
+        $user = User::getById($_SESSION['userId']);
+
+        if (!empty($_FILES['avatar'])) {
+            $avatar = checkAvatar();
+            if($avatar != null) {
+                $user->setAvatar($avatar);
+                $success = $user->update();
+            }
+        }
+        
+        return $success;
     }
 ?>
