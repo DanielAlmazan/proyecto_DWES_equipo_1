@@ -20,6 +20,15 @@ main {
     font-weight: 300;
     min-width: 300px;
     max-width: 1000px;
+
+    a {
+        text-decoration: none;
+        color: #ddefdd;
+    }
+
+    small {
+        color: #d5c075;
+    }
 }
 
 #registerBtn {
@@ -27,37 +36,36 @@ main {
 }
 
 #contactForm {
-    background-color: rgba(255, 255, 255, 0.6);
+    background-color: #FFFFFF99;
     padding: 3rem;
     border-radius: 1rem;
-    box-shadow: 0 .25rem 1rem #050506;
+    box-shadow: 0 .25rem 1rem #000000;
     filter: blur(5);
-    
+
     input, textarea {
         width: 100%;
         padding: .5rem;
         margin: .5rem 0;
         border-radius: 1rem;
-        box-shadow: 0 .25rem 1rem #050506;
+        box-shadow: 0 .25rem 1rem #000000;
         background-color: #fff5f5f5;
     }
-    
+
     label {
         font-weight: bold;
         color: #1e1e24;
     }
-    
+
     & p {
         color: black;
     }
-    
+
     button {
         border: none;
         padding: .5rem;
         border-radius: 1rem;
         color: white;
         background-color: #3e8f3e;
-    
     }
 }
 
@@ -75,14 +83,15 @@ main {
         height: 100%;
         object-fit: cover;
         transition: transform 0.25s ease-in-out;
-        
-        &:hover {
+    }
+
+    &:hover {
+        img {
             transition: transform 0.25s ease-in-out;
             transform: scale(1.1);
         }
     }
     
-
     .event-body {
         padding: 1rem 1rem 0 1rem;
         background-color: rgba(43, 84, 44, 0.75);
