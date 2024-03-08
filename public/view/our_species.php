@@ -6,7 +6,7 @@ $species = Specie::getSpecies();
 ?>
 
 <?php if(isset($_SESSION['admin'])) { ?>
-    <a href="newSpecie.php" class="btn btn-primary mb-3">Nueva especie</a>
+    <a href="formSpecie.php" class="btn btn-primary mb-3">Nueva especie</a>
 <?php } ?>
 
 
@@ -22,8 +22,10 @@ $species = Specie::getSpecies();
                         <p class="card-text">Nombre científico:  <?= $specie->getScientificName(); ?></p>
                         <a href="specieDetail.php?id=<?= $specie->getId(); ?>" class="btn btn-primary">Ver</a>
                         <?php if(isset($_SESSION['admin'])) { ?>
-                        <a href="../controller/SpeciesController.php?action=4&id=<?= $specie->getId(); ?>" class="btn btn-danger">Borrar</a>
+                            <a href="formSpecie.php?id=<?= $specie->getId(); ?>" class="btn btn-warning">Editar</a>
+                            <a href="../controller/SpeciesController.php?action=4&id=<?= $specie->getId(); ?>" class="btn btn-danger">Borrar</a>
                         <?php } ?>
+
                     </div>
                 </div>
             </div>
