@@ -87,13 +87,6 @@ body {
     height: 161px;
 }
 
-#alreadySub {
-    color: #31b0d5;
-    background-color: #0505066e;
-    border-radius: 1rem;
-    padding: 1rem;
-}
-
 .d-none {
     display: none;
 }

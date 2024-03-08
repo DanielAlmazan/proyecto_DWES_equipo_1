@@ -33,9 +33,10 @@
             <?php if($myProfile) { ?>
                 <div>
                     <a class="btn btn-success" role="button" id="registerBtn" href="editProfile.php">Editar perfil</a>
+                    <a class="btn btn-info" role="button" id="registerBtn" href="editProfile.php?changeAvatar=yes">Cambiar avatar</a>
                 </div>
                 <div>
-                    <a class="btn btn-info" role="button" id="registerBtn" href="editProfile.php?changeAvatar=yes">Cambiar avatar</a>
+                    <button class="btn btn-danger" onclick="deleteAccount()" id="registerBtn">Borrar cuenta</button>
                 </div>
             <?php } ?>
         <?php } else { ?>
@@ -43,6 +44,13 @@
         <?php } ?>
     </section>
 </main>
+<script>
+    function deleteAccount() {
+        if(confirm("¿Está seguro de borrar su cuenta? No se podrá deshacer.")) {
+            location.replace("deleteAccount.php");
+        }
+    }
+</script>
 <?php
     require_once("footer.php");
 ?>

@@ -183,7 +183,7 @@
 				$delete = $pdo->prepare($sql);
 
 				// Bind params
-				$delete->bindParam(":id", $id);
+				$delete->bindParam(":id", $this->id);
 
 				$correct = $delete->execute();
 			} catch(Exception $e) {
@@ -336,7 +336,7 @@
 				
 				$correct = $insert->execute();
 			} catch(Exception $e) {
-				echo "<p class='alert alert-danger'>" . $e->getMessage(). "</p>";
+				echo "<p class='alert alert-danger'>El correo " . $email . " ya esta suscrito</p>";
 			} finally {
 				$insert = null;
 				$pdo = null;

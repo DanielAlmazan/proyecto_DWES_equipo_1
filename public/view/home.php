@@ -4,16 +4,25 @@
     require_once dirname(__DIR__) . '/model/Event.php';
     require_once dirname(__DIR__) . '/model/User.php';
     require_once dirname(__DIR__) . '/model/Specie.php';
-    // TODO: Implement sessions functionality
-    $loggedIn = true;
-
-    // TODO: Fetch user from database
-    // $user = new User(2, "Anaclet", "McJohnson", "anaclet@mc.johnson", "Anacletus", "123", "Anaclet's Avatar");
-    // $user->setKarma(3);
-    //TODO: Load events
+    
+    $loggedIn = false;
+    if(isset($_SESSION['userId'])) {
+        $user = User::getById($_SESSION['userId']);
+        $loggedIn = true;
+    }
 
     // Loading the events
     $events = empty($_GET['search']) ? Event::getAll() : Event::getByName($_GET['search']);
+
+    if(isset($_POST['submit'])) {
+        if(empty($_POST['emailNewsletter'])) {
+            echo "<p class='alert alert-danger'>Debes introducir un correo</p>";
+        } else {
+            if(User::suscribeNewsletter($_POST['emailNewsletter'])) {
+                echo "<p class='alert alert-success'>¡Te has suscrito correctamente!</p>";
+            }
+        }
+    }
 ?>
 
 <!-- Principal Content Start -->
@@ -73,20 +82,20 @@
     
     <!-- Newsletter form -->
     <div class="index-form text-center">
-        <h3>SUSCRIBE TO OUR NEWSLETTER </h3>
-        <h5>Suscribe to receive our News and Gifts</h5>
-        <form class="form-horizontal">
+        <h3>SUSCRIBETE A NUESTRO NEWSLETTER </h3>
+        <h5>Suscribete para recibir nuestras noticias y regalos</h5>
+        <form class="form-horizontal" method="post" action="<?= $_SERVER['PHP_SELF'] ?>">
             <div class="form-group">
                 <div class="col-xs-12 col-sm-6 col-sm-push-3 col-md-4 col-md-push-4">
-                    <input class="form-control" type="text" placeholder="Type here your email address">
-                    <a href="" class="btn btn-lg sr-button">SUBSCRIBE</a>
-                    <p id="alreadySub" class="d-none">This email is already subscribed</p>
+                    <input class="form-control" type="text" placeholder="Introduce tu email..." name="emailNewsletter">
+                    <button type="submit" name="submit" class="btn btn-lg sr-button">SUSCRIBIRSE</button>
                 </div>
             </div>
         </form>
     </div>
     <!-- End of Newsletter form -->
-</div><!-- End of index box -->
+</div>
+<!-- End of index box -->
 <?php
     require_once('footer.php');
 ?>
