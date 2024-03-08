@@ -47,7 +47,7 @@
                 <h3>NUESTRO EQUIPO</h3>
                 <hr>
                 <div class="col-xs-12 col-sm-3">
-                    <img class="img-responsive" src="../res/images/clients/client1.jpg" alt="client's picture">
+                    <img class="img-responsive" src="../res/images/avatars/manoplas.jpeg" alt="client's picture" width="205">
                     <h5>LIAM – Desarrollador</h5>
                     <q>Y también MUY guapo.</q>
                 </div>
