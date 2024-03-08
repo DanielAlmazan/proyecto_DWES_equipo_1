@@ -16,12 +16,12 @@ include('header.php');
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
-                        <h5 class="card-title">Scientific Name: <?php echo $specieDetail->getScientificName(); ?></h5>
-                        <p class="card-text">Common Name: <?php echo $specieDetail->getCommonName(); ?></p>
-                        <p class="card-text">Climate: <?php echo $specieDetail->getClimate(); ?></p>
-                        <p class="card-text">Region: <?php echo $specieDetail->getRegion(); ?></p>
-                        <p class="card-text">Days to Grow: <?php echo $specieDetail->getDaysToGrow(); ?></p>
-                        <p class="card-text">Benefits: <?php echo implode(', ', $specieDetail->getBenefits()); ?></p>
+                        <h5 class="card-title">Nombre común: <?php echo $specieDetail->getCommonName(); ?></h5>
+                        <p class="card-text">Nombre científico: <?php echo $specieDetail->getScientificName(); ?></p>
+                        <p class="card-text">Clima: <?php echo $specieDetail->getClimate(); ?></p>
+                        <p class="card-text">Región: <?php echo $specieDetail->getRegion(); ?></p>
+                        <p class="card-text">Días para creecer: <?php echo $specieDetail->getDaysToGrow(); ?></p>
+                        <p class="card-text">Beneficios: <?php echo implode(', ', $specieDetail->getBenefits()); ?></p>
                         <a href="<?php echo $specieDetail->getUrl(); ?>" class="btn btn-primary">Más información</a>
                     </div>
                 </div>
