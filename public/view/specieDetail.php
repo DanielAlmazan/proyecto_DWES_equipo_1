@@ -7,7 +7,7 @@ include('header.php');
 ?>
 
 <div class="container mt-5">
-    <h1 class="my-4 text-center">Specie Profile: <?php echo $specieDetail->getCommonName(); ?></h1>
+    <h1 class="my-4 text-center">Perfil: <?php echo $specieDetail->getCommonName(); ?></h1>
     <div class="d-flex justify-content-center">
         <div class="card">
             <div class="row no-gutters">
@@ -22,7 +22,7 @@ include('header.php');
                         <p class="card-text">Region: <?php echo $specieDetail->getRegion(); ?></p>
                         <p class="card-text">Days to Grow: <?php echo $specieDetail->getDaysToGrow(); ?></p>
                         <p class="card-text">Benefits: <?php echo implode(', ', $specieDetail->getBenefits()); ?></p>
-                        <a href="<?php echo $specieDetail->getUrl(); ?>" class="btn btn-primary">Learn more</a>
+                        <a href="<?php echo $specieDetail->getUrl(); ?>" class="btn btn-primary">Más información</a>
                     </div>
                 </div>
             </div>
