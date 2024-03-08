@@ -97,3 +97,93 @@ body {
 .d-none {
     display: none;
 }
+
+/* Styles for Event detail */
+
+.detail-header {
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.detail-header h1 {
+    font-size: 4em;
+    font-weight: bold;
+    color: white;
+    margin-left: 20px;
+}
+
+.detail-header-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 40px;
+    padding: 10px 20px;
+    background-color: rgba(255, 255, 255, 0.75);
+}
+
+.detail-header-info p {
+    margin: 0;
+}
+
+.detail-header-info p > span {
+    font-weight: bold;
+}
+
+.detail-header-title {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+}
+
+.detail-header-title a {
+    font-size: 1.3em;
+}
+
+.detail-main {
+    margin: 4rem;
+    display: grid;
+    grid-template-columns: 4fr 2fr;
+    grid-template-rows: auto auto;
+}
+
+.detail-desc {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: start;
+    width: 90%;
+    padding: 20px;
+    border-radius: 15px;
+    background-color: #ffebca;
+}
+
+.detail-desc h2 {
+    margin: 5px 0 20px 0;
+}
+
+.detail-desc p {
+    margin: 0;
+}
+
+.detail-info {
+    width: 80%;
+    min-width: auto;
+    padding: 15px 30px;
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    border-radius: 15px;
+    background-color: #facd83;
+}
+
+.detail-info p > span {
+    font-weight: bold;
+}
+
+.detail-attendees {
+    grid-column: 1;
+    grid-row: 2;
+    width: 90%;
+    padding: 20px;
+}
