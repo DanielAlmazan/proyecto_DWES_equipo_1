@@ -24,7 +24,7 @@ main {
     gap: 2em;
 
     font-weight: 300;
-    min-width: 300px;
+    width: 90vw;
     max-width: 90%;
 
     a {
@@ -79,7 +79,7 @@ main {
     color: #ddefdd;
     border-radius: 1rem;
     box-shadow: 0 .25rem 1rem #050506;
-    width: fit-content;
+    width: 25%;
     overflow: hidden;
     position: relative;
     height: 250px;
@@ -106,7 +106,12 @@ main {
         width: 100%;
         height: 8rem;
 
-        h2, h3, p, a {
+        h2 {
+            overflow-wrap: break-word;
+            display: inline;
+        }
+
+        h3, p, a {
             white-space: nowrap;
             display: inline;
         }
@@ -153,6 +158,7 @@ body {
 
 #index main {
     margin: 1em;
+    width: 100%;
 }
 
 .index-form {
