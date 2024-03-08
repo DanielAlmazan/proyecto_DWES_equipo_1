@@ -1,6 +1,8 @@
 <?php
     session_start();
     require_once("../model/User.php");
+    require_once("../model/Event.php");
+    require_once("../model/Specie.php");
     require_once("../controller/UserController.php");
 
     if(isset($_SESSION['userId'])) {
@@ -11,6 +13,8 @@
             $user = User::getById($_SESSION['userId']);
             $myProfile = true;
         }
+
+        $eventsOfUser = User::getEventsOfUser($user->getId());
     } else {
         // If user's not logged in, we'll redirect to login page
         header("Location: login.php");
@@ -38,8 +42,17 @@
                 <div>
                     <button class="btn btn-danger" onclick="deleteAccount()" id="registerBtn">Borrar cuenta</button>
                 </div>
-            <?php } ?>
-        <?php } else { ?>
+            <?php }
+            if(count($eventsOfUser) > 0) {
+                ?> <h2>Eventos del usuario</h2>
+                <div id="eventsContainer">
+                    <?php
+                    foreach($eventsOfUser as $event) {
+                        $event->showCard(true);
+                    } ?>
+                </div>
+            <?php }
+        } else { ?>
             <p>No existe ese usuario</p>
         <?php } ?>
     </section>
