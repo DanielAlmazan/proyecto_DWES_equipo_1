@@ -6,21 +6,17 @@
         "home.php",
         "user.php",
         "about.php",
-        // "blog.php",
         "contact.php",
         "our_species.php",
-        "achievements.php",
     ];
     // This array is used to create the navigation bar
     // The key is the filename and the value is the title
     $titles = [
         $fileNames[0] => "Home",
-        $fileNames[1] => "Usuario",
+        $fileNames[1] => "Perfil",
         $fileNames[2] => "Sobre nosotros",
-        // $fileNames[3] => "Blog",
         $fileNames[3] => "Contacto",
         $fileNames[4] => "Nuestras especies",
-        $fileNames[5] => "Logros",
     ];
 
     // This array is used to create the icons
@@ -29,10 +25,8 @@
         $fileNames[0] => "home",
         $fileNames[1] => "user",
         $fileNames[2] => "bookmark",
-        // $fileNames[3] => "file-text",
         $fileNames[3] => "phone",
         $fileNames[4] => "tree",
-        $fileNames[5] => "trophy"
     ];
 
     $fileName = basename($_SERVER["PHP_SELF"]);
@@ -43,7 +37,7 @@
 
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
