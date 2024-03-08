@@ -48,7 +48,7 @@
                 <div id="eventsContainer">
                     <?php
                     foreach($eventsOfUser as $event) {
-                        $event->showCard(true);
+                        $event->showCard();
                     } ?>
                 </div>
             <?php }

@@ -560,7 +560,7 @@
         /**
          * Method that prints a card with the basic info of the Event
          */
-        public function showCard(bool $loggedIn) {
+        public function showCard() {
             ?>
                 <div class="event">
                     <?php if (!empty($this->getBannerPicture())) { ?>
@@ -574,16 +574,6 @@
                     <div class="event-body">
                         <h2><a href="<?= 'http://' . $_SERVER['SERVER_NAME'] . '/controller/EventController.php?action=2&id=' . $this->getId();?>"><?=$this->getName();?></a></h2>
                         <p><small><?= $this->getLocality() ?></small></p>
-                        <?php
-                            if ($loggedIn) {
-                                // TODO: Call some kind of "joinToEvent" method
-                                ?>
-                                <form action="#">
-                                    <input type="submit" value="Join Event" id="btnJoinEvent">
-                                </form>
-                                <?php
-                            }
-                        ?>
                     </div>
                 </div>
             <?php
