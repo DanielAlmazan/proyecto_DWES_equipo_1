@@ -89,6 +89,7 @@
                 <div class="col-xs-12 col-sm-6 col-sm-push-3 col-md-4 col-md-push-4">
                     <input class="form-control" type="text" placeholder="Introduce tu email..." name="emailNewsletter">
                     <button type="submit" name="submit" class="btn btn-lg sr-button">SUSCRIBIRSE</button>
+                    <a href="unsuscribeNewseltter.php" class="btn btn-lg sr-button">DESUSCRIBIRSE</a>
                 </div>
             </div>
         </form>

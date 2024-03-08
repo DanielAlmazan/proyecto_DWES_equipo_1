@@ -196,6 +196,7 @@
 			return $correct;
 		}
 
+		// This function is not used yet, we can use it to allow admins manage users
 		static function getAll() {
 			$users = [];
 
@@ -365,7 +366,8 @@
 					$delete->bindParam(":email", $email);;
 
 					$correct = $delete->execute();
-				}
+				} else
+					echo "<p class='alert alert-danger'>El email " . $email . " no existe</p>";
 			} catch(Exception $e) {
 				echo "<p class='alert alert-danger'>" . $e->getMessage(). "</p>";
 			} finally {
