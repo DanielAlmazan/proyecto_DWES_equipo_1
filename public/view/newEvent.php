@@ -2,6 +2,7 @@
     require_once dirname(__DIR__) . '/model/Event.php';
     session_start();
 
+    // Getting the current User, if the user isn't logged in we redirect
     $idUser = null;
     if(isset($_SESSION['userId'])) {
         $idUser = $_SESSION['userId'];
@@ -9,6 +10,7 @@
         header('Location: http://' . $_SERVER['SERVER_NAME'] . '/index.php');
     }
 
+    // The title of the page
     $pageTitle = "Add Event";
     require_once("header.php");
 ?>

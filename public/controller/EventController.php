@@ -5,6 +5,9 @@
 
     define('HOME_PATH', 'Location: http://' . $_SERVER['SERVER_NAME'] . '/index.php');
 
+    /**
+     * Method to render the detail of an Event
+     */
     function eventDetail() {
         // Checking if there is an ID
         if (empty($_GET['id'])) {
@@ -61,6 +64,9 @@
         return $fileName;
     }
 
+    /**
+     * Method to save the Event
+     */
     function saveEvent() {
         if (
             empty($_POST['name']) ||
@@ -70,11 +76,11 @@
             empty($_POST['host']) ||
             empty($_POST['type'])
         ) {
-            // TODO: Redirigir a newEvent con los errores
             header(HOME_PATH);
             exit();
         }
 
+        // Basic filter of inputs
         $name = htmlspecialchars(stripcslashes(trim($_POST['name'])));
         $description = empty($_POST['description']) ? 'Sin descripción' : htmlspecialchars(stripcslashes(trim($_POST['description'])));
         $province = htmlspecialchars(stripcslashes(trim($_POST['province'])));
@@ -84,14 +90,14 @@
         $type = htmlspecialchars(stripcslashes(trim($_POST['type'])));
         $hostId = htmlspecialchars(stripcslashes(trim($_POST['host'])));
 
-        // TODO: Validación específica para date, type y host
-
         $bannerPicture = '';
 
+        // In case a picture was uploaded by the user
         if (!empty($_FILES['bannerPicture'])) {
             $bannerPicture = saveBanner();
         }
 
+        // Getting the host
         $hostAux = User::getById($hostId);
 
         $eventAux = new Event($name, $description, $province, $locality, $terrainType, new DateTime($date), 
@@ -110,6 +116,9 @@
         exit();
     }
 
+    /**
+     * Method to delete an Event
+     */
     function deleteEvent() {
         // Checking if there is an ID
         if (empty($_GET['id'])) {
@@ -124,6 +133,9 @@
         exit();
     }
 
+    /**
+     * Method to subscribe the current user to an event
+     */
     function subscribeEvent() {
         // Checking if there is an ID
         if (empty($_GET['id']) || !isset($_SESSION['userId'])) {
@@ -141,6 +153,9 @@
         exit();
     }
 
+    /**
+     * Method to unsubscribe the current user to an event
+     */
     function unsubscribeEvent() {
         // Checking if there is an ID
         if (empty($_GET['id']) || !isset($_SESSION['userId'])) {
@@ -158,12 +173,15 @@
         exit();
     }
 
+    // Default action
     $action = 1;
 
+    // Getting the action if it's in the URL
     if (isset($_GET['action']) && !empty($_GET['action'])) {
         $action = $_GET['action'];
     } 
 
+    // Switch to see which action is requestes
     switch($action) {
         case 2:
             // Detail of an Event

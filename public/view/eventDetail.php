@@ -49,7 +49,6 @@
         <h1><?=$eventDetail->getName();?></h1>
 
         <?php if ($isHost) { ?>
-            <a href="" class="btn btn-warning"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
             <a href="<?= 'http://' . $_SERVER['SERVER_NAME'] . '/controller/EventController.php?action=3&id=' . $eventDetail->getId();?>" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></a>
         <?php } else if (!$isAttendee) { ?>
             <a href="<?= 'http://' . $_SERVER['SERVER_NAME'] . '/controller/EventController.php?action=5&id=' . $eventDetail->getId();?>" class="btn btn-success"><i class="fa fa-plus" aria-hidden="true"></i> Inscribirse</a>
