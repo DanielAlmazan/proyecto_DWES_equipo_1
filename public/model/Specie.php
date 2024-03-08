@@ -201,7 +201,8 @@ class Specie
             $insert->bindParam(':climate', $this->climate);
             $insert->bindParam(':region', $this->region);
             $insert->bindParam(':daysToGrow', $this->daysToGrow, PDO::PARAM_INT);
-            $insert->bindParam(':benefits', $this->benefits);
+            $benefitsString = implode(',', $this->benefits);
+            $insert->bindParam(':benefits', $benefitsString);
             $insert->bindParam(':picture', $this->picture);
             $insert->bindParam(':url', $this->url);
             $insert->execute();
@@ -226,7 +227,9 @@ class Specie
             $update->bindParam(':climate', $this->climate);
             $update->bindParam(':region', $this->region);
             $update->bindParam(':daysToGrow', $this->daysToGrow, PDO::PARAM_INT);
-            $update->bindParam(':benefits', $this->benefits);
+            $update->bindParam(':daysToGrow', $this->daysToGrow, PDO::PARAM_INT);
+            $benefitsString = implode(',', $this->benefits);
+            $update->bindParam(':benefits', $benefitsString);
             $update->bindParam(':picture', $this->picture);
             $update->bindParam(':url', $this->url);
             $update->execute();
