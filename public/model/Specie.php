@@ -130,7 +130,7 @@ class Specie
             $sql = "SELECT * FROM species";
             $select = $pdo->prepare($sql);
             $select->execute();
-            while ($specie = $select->fetch()) {
+            while ($specie = $select->fetchObject()) {
                 $benefitsArray = explode(',', $specie->benefits);
                 $species[] = new Specie(
                     $specie->id,
