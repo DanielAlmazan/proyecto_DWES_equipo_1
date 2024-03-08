@@ -3,6 +3,7 @@
     require_once("header.php");
     require_once dirname(__DIR__) . '/model/Event.php';
     require_once dirname(__DIR__) . '/model/User.php';
+    require_once dirname(__DIR__) . '/model/Specie.php';
     // TODO: Implement sessions functionality
     $loggedIn = true;
 
@@ -11,7 +12,8 @@
     // $user->setKarma(3);
     //TODO: Load events
 
-    $events = Event::getAll();
+    // Loading the events
+    $events = empty($_GET['search']) ? Event::getAll() : Event::getByName($_GET['search']);
 ?>
 
 <!-- Principal Content Start -->
@@ -27,19 +29,41 @@
             </div>
         </div>
     </div>
+
+    <form action="#" method="get">
+        <div class="col-lg-6">
+            <div class="input-group">
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    name="search" 
+                    placeholder="Buscar por nombre..."
+                    <?php 
+                        if (!empty($_GET['search'])) { 
+                            echo 'value="' . $_GET['search'] . '"';
+                        }
+                    ?>
+                >
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                </span>
+            </div>
+        </div>
+    </form>
     
     <main>
-        <h2>Events</h2>
+        <h2>Events 
+            <?php if($loggedIn) { ?>
+                <a href="<?= 'http://' . $_SERVER['SERVER_NAME'] . '/view/newEvent.php'?>" class="btn btn-success"><i class="fa fa-plus" aria-hidden="true"></i> Añadir</a></h2>
+            <?php } ?>
         <div id="eventsContainer">
             <?php
-                // $events = [
-                //    new Event("Event 1", "Description", "Province", "Locality", "Terrain type", new DateTime(), "Type", $user, "oak.png"),
-                //     new Event("Event 2", "Description", "Province", "Locality", "Terrain type", new DateTime(), "Type", $user, "juniper.png"),
-                // ];
+                // Showing all the events
                 foreach ($events as $event) {
                     $event->showCard($loggedIn);
                 }
 
+                // Printing a message in case there are no events
                 if (count($events) == 0) {
                     echo "<p>No hay eventos! :(</p>";
                 }
