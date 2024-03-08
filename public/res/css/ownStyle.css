@@ -26,6 +26,41 @@ main {
     margin-top: 10px;
 }
 
+#contactForm {
+    background-color: rgba(255, 255, 255, 0.6);
+    padding: 3rem;
+    border-radius: 1rem;
+    box-shadow: 0 .25rem 1rem #050506;
+    filter: blur(5);
+    
+    input, textarea {
+        width: 100%;
+        padding: .5rem;
+        margin: .5rem 0;
+        border-radius: 1rem;
+        box-shadow: 0 .25rem 1rem #050506;
+        background-color: #fff5f5f5;
+    }
+    
+    label {
+        font-weight: bold;
+        color: #1e1e24;
+    }
+    
+    & p {
+        color: black;
+    }
+    
+    button {
+        border: none;
+        padding: .5rem;
+        border-radius: 1rem;
+        color: white;
+        background-color: #3e8f3e;
+    
+    }
+}
+
 .event {
     color: #ddefdd;
     border-radius: 1rem;

@@ -15,12 +15,12 @@
     // The key is the filename and the value is the title
     $titles = [
         $fileNames[0] => "Home",
-        $fileNames[1] => "User",
-        $fileNames[2] => "About",
+        $fileNames[1] => "Usuario",
+        $fileNames[2] => "Sobre nosotros",
         // $fileNames[3] => "Blog",
-        $fileNames[3] => "Contact",
-        $fileNames[4] => "Our Species",
-        $fileNames[5] => "Achievements",
+        $fileNames[3] => "Contacto",
+        $fileNames[4] => "Nuestras especies",
+        $fileNames[5] => "Logros",
     ];
 
     // This array is used to create the icons
