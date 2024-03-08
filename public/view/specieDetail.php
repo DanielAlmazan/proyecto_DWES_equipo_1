@@ -12,7 +12,7 @@ include('header.php');
         <div class="card">
             <div class="row no-gutters">
                 <div class="col-md-4 d-flex align-items-center justify-content-center pr-3">
-                    <img class="card-img-left" src="../res/images/species/<?= $specieDetail->getPicture(); ?>" alt="Species Image " style="height: 200px; object-fit: cover;">
+                    <img class="card-img-left" src="../res/images/species/<?= $specieDetail->getPicture(); ?>" alt="Species Image " style="height: 250px; object-fit: cover;">
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">

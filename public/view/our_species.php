@@ -9,7 +9,6 @@ $species = Specie::getSpecies();
     <a href="formSpecie.php" class="btn btn-primary mb-3">Nueva especie</a>
 <?php } ?>
 
-
 <section class="container">
     <h1 class="my-4 text-center">Listado de especies</h1>
     <div class="row">
@@ -17,15 +16,16 @@ $species = Specie::getSpecies();
             <div class="col-md-4 specieCard">
                 <div class="card mb-4">
                     <img class="card-img-top" src="../res/images/species/<?= $specie->getPicture(); ?>" alt="Imagen de <?= $specie->getCommonName(); ?>" style="height: 200px; object-fit: cover;">
-                    <div class="card-body">
+                    <div class="card-body text-center"> <!-- Añadido clase text-center -->
                         <h5 class="card-title">Nombre común: <?= $specie->getCommonName(); ?></h5>
                         <p class="card-text">Nombre científico:  <?= $specie->getScientificName(); ?></p>
-                        <a href="specieDetail.php?id=<?= $specie->getId(); ?>" class="btn btn-primary">Ver</a>
-                        <?php if(isset($_SESSION['admin'])) { ?>
-                            <a href="formSpecie.php?id=<?= $specie->getId(); ?>" class="btn btn-warning">Editar</a>
-                            <a href="../controller/SpeciesController.php?action=4&id=<?= $specie->getId(); ?>" class="btn btn-danger">Borrar</a>
-                        <?php } ?>
-
+                        <div style="padding-bottom: 10px;"> <!-- Añadido div con padding-bottom -->
+                            <a href="specieDetail.php?id=<?= $specie->getId(); ?>" class="btn btn-primary">Ver</a>
+                            <?php if(isset($_SESSION['admin'])) { ?>
+                                <a href="formSpecie.php?id=<?= $specie->getId(); ?>" class="btn btn-warning">Editar</a>
+                                <a href="../controller/SpeciesController.php?action=4&id=<?= $specie->getId(); ?>" class="btn btn-danger">Borrar</a>
+                            <?php } ?>
+                        </div>
                     </div>
                 </div>
             </div>
