@@ -11,8 +11,8 @@ include('header.php');
     <div class="d-flex justify-content-center">
         <div class="card">
             <div class="row no-gutters">
-                <div class="col-md-4">
-                    <img class="card-img" src="<?php echo $specieDetail->getPicture(); ?>" alt="Card image cap">
+                <div class="col-md-4 d-flex align-items-center justify-content-center pr-3">
+                    <img class="card-img-left" src="../res/images/species/<?= $specieDetail->getPicture(); ?>" alt="Species Image " style="height: 200px; object-fit: cover;">
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
@@ -22,7 +22,7 @@ include('header.php');
                         <p class="card-text">Region: <?php echo $specieDetail->getRegion(); ?></p>
                         <p class="card-text">Days to Grow: <?php echo $specieDetail->getDaysToGrow(); ?></p>
                         <p class="card-text">Benefits: <?php echo implode(', ', $specieDetail->getBenefits()); ?></p>
-                        <a href="<?php echo $specieDetail->getUrl(); ?>" class="btn btn-primary">Go to URL</a>
+                        <a href="<?php echo $specieDetail->getUrl(); ?>" class="btn btn-primary">Learn more</a>
                     </div>
                 </div>
             </div>
