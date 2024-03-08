@@ -2,35 +2,53 @@
 $pageTitle = "Add Specie";
 include('header.php');
 ?>
-<h1>New Specie</h1>
-<form action="add_species.php" method="POST" enctype="multipart/form-data">
-    <label for="scientific_name">Scientific Name:</label>
-    <input type="text" id="scientific_name" name="scientific_name" required><br><br>
+<div class="container">
+    <h1 class="my-4 text-center">New Specie</h1>
+    <form action="../controller/SpeciesController.php?action=2" method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="scientificName" class="form-label">Scientific Name:</label>
+            <input type="text" class="form-control" id="scientificName" name="scientificName" required>
+        </div>
 
-    <label for="common_name">Common Name:</label>
-    <input type="text" id="common_name" name="common_name" required><br><br>
+        <div class="mb-3">
+            <label for="commonName" class="form-label">Common Name:</label>
+            <input type="text" class="form-control" id="commonName" name="commonName" required>
+        </div>
 
-    <label for="climate">Climate:</label>
-    <input type="text" id="climate" name="climate" required><br><br>
+        <div class="mb-3">
+            <label for="climate" class="form-label">Climate:</label>
+            <input type="text" class="form-control" id="climate" name="climate" required>
+        </div>
 
-    <label for="region">Region:</label>
-    <input type="text" id="region" name="region" required><br><br>
+        <div class="mb-3">
+            <label for="region" class="form-label">Region:</label>
+            <input type="text" class="form-control" id="region" name="region" required>
+        </div>
 
-    <label for="days_to_grow">Days to Grow:</label>
-    <input type="number" id="days_to_grow" name="days_to_grow" required><br><br>
+        <div class="mb-3">
+            <label for="daysToGrow" class="form-label">Days to Grow:</label>
+            <input type="number" class="form-control" id="daysToGrow" name="daysToGrow" required>
+        </div>
 
-    <label for="benefits">Benefits:</label><br>
-    <textarea id="benefits" name="benefits" required></textarea><br><br>
+        <div class="mb-3">
+            <label for="benefits" class="form-label">Benefits:</label>
+            <textarea class="form-control" id="benefits" name="benefits" required></textarea>
+        </div>
 
+        <div class="mb-3">
+            <label for="picture" class="form-label">Picture:</label>
+            <input type="file" class="form-control" id="picture" name="picture" required accept="image/*">
+        </div>
 
-    <label for="picture">Picture:</label>
-    <input type="file" id="picture" name="picture" required accept="image/*"><br><br>
+        <div class="mb-3">
+            <label for="url" class="form-label">URL:</label>
+            <input type="text" class="form-control" id="url" name="url" required>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Add Specie</button>
+    </form>
 
-    <label for="url">URL:</label>
-    <input type="text" id="url" name="url" required><br><br>
-
-    <input type="submit" value="Add Specie">
-</form>
+</div>
 <?php
 include('footer.php');
 ?>
