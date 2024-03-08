@@ -1,5 +1,7 @@
 <?php
     require_once dirname(__DIR__) . '/DB/ReforestaDB.php';
+    require_once dirname(__DIR__) . '/model/Specie.php';
+    require_once dirname(__DIR__) . '/model/User.php';
 
     /**
      * Class that represents an Event of Reforesta.
@@ -19,6 +21,15 @@
         private bool $approved;
         private array $attendees;
         private array $species;
+
+        // Enumeration of valid data for 'type'
+        public static $eventTypes = [
+            'urbana' => 'Urbana',
+            'rural_cons' => 'Rural de conservación',
+            'rural_prot' => 'Rural de protección',
+            'rural_agro' => 'Rural de agroforestal',
+            'rural_prod' => 'Rural productiva'
+        ];
 
         public function __construct(string $name, string $description, string $province,
             string $locality, string $terrainType, DateTime $date, string $type, 
@@ -189,14 +200,15 @@
 
                 // Executing the statement
                 $insert->execute();
+                $this->id = $connection->lastInsertId();
 
                 // Inserting all attendees into usersInEvent
                 foreach($this->attendees as $attendee) {
-                    $this->insertAttendeeDB($attendee->id, $connection);
+                    $this->insertAttendeeDB($attendee->getId(), $connection);
                 }
                 // Inserting all species into speciesInEvent
                 foreach($this->species as $specie) {
-                    $this->insertSpecieDB($specie->id, $connection);
+                    $this->insertSpecieDB($specie->getId(), $connection);
                 }
 
                 // Commit of the transaction
@@ -211,8 +223,6 @@
                 $insert = null;
                 $connection = null;
             }
-
-            
         }
 
         /**
@@ -586,7 +596,7 @@
             $insert = null;
 
             try {
-                $insert = $connection->prepare('INSERT INTO usersInEvents (userId, eventId) VALUES (:userId, :eventId)');
+                $insert = $connection->prepare('INSERT INTO usersInEvent (userId, eventId) VALUES (:userId, :eventId)');
                 $insert->bindParam(':userId', $idAttendee);
                 $insert->bindParam(':eventId', $this->id);
     
@@ -605,7 +615,7 @@
             $insert = null;
 
             try {
-                $insert = $connection->prepare('INSERT INTO speciesInEvents (specieId, eventId) VALUES (:specieId, :eventId)');
+                $insert = $connection->prepare('INSERT INTO speciesInEvent (specieId, eventId) VALUES (:specieId, :eventId)');
                 $insert->bindParam(':specieId', $idSpecie);
                 $insert->bindParam(':eventId', $this->id);
 
