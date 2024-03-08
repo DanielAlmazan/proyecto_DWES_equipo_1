@@ -63,8 +63,9 @@
     <main>
         <h2>Events 
             <?php if($loggedIn) { ?>
-                <a href="<?= 'http://' . $_SERVER['SERVER_NAME'] . '/view/newEvent.php'?>" class="btn btn-success"><i class="fa fa-plus" aria-hidden="true"></i> Añadir</a></h2>
+                <a href="<?= 'http://' . $_SERVER['SERVER_NAME'] . '/view/newEvent.php'?>" class="btn btn-success"><i class="fa fa-plus" aria-hidden="true"></i> Añadir</a>
             <?php } ?>
+        </h2>
         <div id="eventsContainer">
             <?php
                 // Showing all the events

@@ -1,10 +1,16 @@
 <?php
+    require_once dirname(__DIR__) . '/model/Event.php';
     session_start();
+
+    $idUser = null;
+    if(isset($_SESSION['userId'])) {
+        $idUser = $_SESSION['userId'];
+    } else {
+        header('Location: http://' . $_SERVER['SERVER_NAME'] . '/index.php');
+    }
+
     $pageTitle = "Add Event";
     require_once("header.php");
-
-    // TODO: Get the current user
-    $idUser = 1;
 ?>
 <main>
     <form enctype="multipart/form-data" action="<?= 'http://' . $_SERVER['SERVER_NAME'] . '/controller/EventController.php?action=4'?>" method="post">
@@ -34,11 +40,9 @@
                 <label for="type">Tipo</label>
                 <select class="form-control" name="type" required>
                     <option selected disabled>Escoge un tipo...</option>
-                    <option value="urbana">Urbana</option>
-                    <option value="rural de conservacin">Rural de conservación</option>
-                    <option value="rural de proteccin">Rural de protección</option>
-                    <option value="rural de agroforestal">Rural de agroforestal</option>
-                    <option value="rural productiva">Rural productiva</option>
+                    <?php foreach(Event::$eventTypes as $key => $value) { ?>
+                        <option value="<?=$key;?>"><?=$value;?></option>
+                    <?php } ?>
                 </select>
             </div>
         </div>
