@@ -11,6 +11,9 @@
         private int $karma;
         private string $avatar;
 
+		const CREATE_EVENT_KARMA = 4;
+		const PARTICIPATE_EVENT_KARMA = 3;
+
 		// Default id = 0 for users not inserted in DB
         public function __construct(string $name, string $surnames, string $email,
             string $nickName, string $password, string $avatar, int $karma = 0, int $id = 0) {
@@ -226,6 +229,31 @@
 			}
 
             return $users;
+        }
+
+		static function getEventsOfUser(int $id) {
+			$events = [];
+
+			try {
+				$pdo = ReforestaDB::connectDB();
+				$sql = "SELECT * FROM usersInEvent WHERE userId=:userId";
+				$select = $pdo->prepare($sql);
+
+				// Bind params
+				$select->bindParam(":userId", $id);
+				
+				$select->execute();
+				while ($event = $select->fetch()) {
+					$events[] = Event::getById($event['eventId']);
+				}
+			} catch(Exception $e) {
+				echo "<p class='alert alert-danger'>" . $e->getMessage(). "</p>";
+			} finally {
+				$select = null;
+				$pdo = null;
+			}
+
+            return $events;
         }
 		
 		static function getById(int $id) {
