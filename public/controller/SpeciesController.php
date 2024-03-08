@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__DIR__) . '/DB/ReforestaDB.php';
+
 require_once dirname(__DIR__) . '/model/Specie.php';
 
 function uploadImage($picture): string
