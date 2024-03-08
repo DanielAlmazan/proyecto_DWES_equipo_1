@@ -5,7 +5,7 @@
          <ul class="nav col-sm-4">
            <li class="footer-number"><i class="fa fa-phone sr-icons"></i>  +34666666666 </li>
            <li><i class="fa fa-envelope sr-icons"></i>  reforesta@gmail.com</li>
-           <li>Better ask our client</li>
+             <li><a href="contact.php">¡Contáctanos!</a></li>
          </ul>
          <ul class="list-inline social-buttons col-sm-4 col-sm-push-4">
             <li><a href="#"><i class="fa fa-facebook sr-icons"></i></a>
