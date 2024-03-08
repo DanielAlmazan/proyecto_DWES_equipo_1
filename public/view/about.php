@@ -14,8 +14,8 @@
                         <img class="img-responsive" src="../res/images/reforesta.png" alt="header picture">
                     </div>
                     <div class="carousel-caption">
-                        <h1>ABOUT US</h1>
-                        <p>About Us and our Services?</p>
+                        <h1>SOBRE NOSOTROS</h1>
+                        <p>Toda nuestra info. Aquí y ahora.</p>
                         <hr>
                     </div>
                 </div>
@@ -29,22 +29,22 @@
                 <div class="col-xs-12 col-sm-6">
                     <div class="box-about">
                         <i class="fa fa-institution fa-2x"></i>
-                        <h4>About Our Mission</h4>
-                        <p class="text-left text-muted">Bringing trees to every forest on Earth.</p>
+                        <h4>Nuestra misión</h4>
+                        <p class="text-left text-muted">Llevar árboles a cada bosque en La Tierra.</p>
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-6">
                     <div class="box-about">
                         <i class="fa fa-group fa-2x"></i>
-                        <h4>About Our Team</h4>
-                        <p class="text-left text-muted">The Best. The most capable. The cheapest.</p>
+                        <h4>Nuestro equipo</h4>
+                        <p class="text-left text-muted">Los mejores. Los más capaces. Los más baratos.</p>
                     </div>
                 </div>
             </div>
 
             <!-- Clients Feedback -->
             <div class="row feedback text-center">
-                <h3>OUR TEAM</h3>
+                <h3>NUESTRO EQUIPO</h3>
                 <hr>
                 <div class="col-xs-12 col-sm-3">
                     <img class="img-responsive" src="../res/images/clients/client1.jpg" alt="client's picture">
@@ -52,7 +52,7 @@
                     <q>Y también MUY guapo.</q>
                 </div>
                 <div class="col-xs-12 col-sm-3">
-                    <img class="img-responsive" src="../res/images/clients/client2.jpg" alt="client's picture">
+                    <img class="img-responsive" src="../res/images/avatars/analisto.png" alt="Foto de nuestro analisto">
                     <h5>DANI – Analisto</h5>
                     <q>Más listo que el hambre.</q>
                 </div>
