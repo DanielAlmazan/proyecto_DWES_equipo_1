@@ -25,14 +25,14 @@
     require_once("header.php");
 ?>
 <main>
-    <section id="userInfo">
+    <section class="userInfo">
         <?php if($user) { ?>
             <p><strong>Nickname: </strong><?= $user->getNickName() ?></p>
             <p><strong>Karma: </strong><?= $user->getKarma() ?> puntos</p>
             <p><strong>Nombre: </strong><?= $user->getName() ?></p>
             <p><strong>Apellidos: </strong><?= $user->getSurnames() ?></p>
             <p><strong>Email: </strong><?= $user->getEmail() ?></p>
-            <p><strong>Avatar:</strong></p>
+            <p><strong>Avatar</strong></p>
             <img src="/res/images/avatars/<?= $user->getAvatar() ?>" alt="Foto perfil">
             <?php if($myProfile) { ?>
                 <div>

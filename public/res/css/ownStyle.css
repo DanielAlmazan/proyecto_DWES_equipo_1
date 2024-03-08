@@ -113,6 +113,12 @@ main {
     }
 }
 
+.userInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 html {
     position: relative;
     min-height: 100%;
