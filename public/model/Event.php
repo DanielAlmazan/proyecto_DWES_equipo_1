@@ -38,6 +38,9 @@
             if ($id != null) {
                 $this->id = $id;
             }
+
+            $this->species = [];
+            $this->attendees = [];
         }
 
         // GETTERS AND SETTERS
@@ -170,6 +173,8 @@
                 'terrainType, date, bannerPicture, type) VALUES (:name, :host, :description, :province, :locality, ' .
                 ':terrainType, :date, :bannerPicture, :type)');
 
+                $date = $this->date->format('Y-m-d');
+
                 // Binding all the parameters
                 $insert->bindParam(':name', $this->name);
                 $hostId = $this->host->getId();
@@ -178,12 +183,12 @@
                 $insert->bindParam(':province', $this->province);
                 $insert->bindParam(':locality', $this->locality);
                 $insert->bindParam(':terrainType', $this->terrainType);
-                $insert->bindParam(':date', $this->date);
+                $insert->bindParam(':date', $date);
                 $insert->bindParam(':bannerPicture', $this->bannerPicture);
                 $insert->bindParam(':type', $this->type);
 
                 // Executing the statement
-                $connection->exec($insert);
+                $insert->execute();
 
                 // Inserting all attendees into usersInEvent
                 foreach($this->attendees as $attendee) {
@@ -206,6 +211,8 @@
                 $insert = null;
                 $connection = null;
             }
+
+            
         }
 
         /**
@@ -240,9 +247,9 @@
                 $deleteSpecies->bindParam(':eventId', $this->id); 
 
                 // Executing the statements
-                $connection->exec($deleteEvent);
-                $connection->exec($deleteAttendees);
-                $connection->exec($deleteSpecies);
+                $deleteEvent->execute();
+                $deleteAttendees->execute();
+                $deleteSpecies->execute();
 
                 // Commit of the transaction
                 $connection->commit();
@@ -425,15 +432,16 @@
                 $connection = ReforestaDB::connectDB();
 
                 // Preparing the select statement
-                $select = $connection->prepare('SELECT * FROM events WHERE name=:name');
-                $select->bindParam(':name', $name);
+                $select = $connection->prepare('SELECT * FROM events WHERE name LIKE :name');
+                $likeName = '%' . $name . '%';
+                $select->bindParam(':name', $likeName);
                 $select->setFetchMode(PDO::FETCH_ASSOC);
                 $select->execute();
 
                 // Looping through the result to add it to the events array
                 while ($entry = $select->fetch()) {
                     // We add an Event to the array with our own method
-                    $events[] = Event::getById($entry->id);
+                    $events[] = Event::getById($entry['id']);
                 }
             } catch(Exception $e) {
                 // If an exception is found, we empty the array
@@ -545,10 +553,16 @@
         public function showCard(bool $loggedIn) {
             ?>
                 <div class="event">
-                    <img src="../res/images/species/<?=$this->getBannerPicture();?>"
-                            alt="<?= $this->getBannerPicture() ?>">
+                    <?php if (!empty($this->getBannerPicture())) { ?>
+                        <img src="../res/images/events/<?=$this->getBannerPicture();?>"
+                                alt="<?= $this->getBannerPicture() ?>">
+                    <?php } else { ?>
+                        <img src="../res/images/events/default.png"
+                                alt="Default image of an Event">
+                    <?php } ?>
+
                     <div class="event-body">
-                        <h2><a href="<?= dirname(__DIR__) . '/controller/EventController.php?action=2&id=' . $this->getId();?>"><?=$this->getName();?></a></h2>
+                        <h2><a href="<?= 'http://' . $_SERVER['SERVER_NAME'] . '/controller/EventController.php?action=2&id=' . $this->getId();?>"><?=$this->getName();?></a></h2>
                         <p><small><?= $this->getLocality() ?></small></p>
                         <?php
                             if ($loggedIn) {
@@ -576,7 +590,7 @@
                 $insert->bindParam(':userId', $idAttendee);
                 $insert->bindParam(':eventId', $this->id);
     
-                $connection->exec($insert);
+                $insert->execute();
             } catch(Exception $e) {
                 throw new Exception($e->getMessage());
             } finally {
@@ -595,7 +609,7 @@
                 $insert->bindParam(':specieId', $idSpecie);
                 $insert->bindParam(':eventId', $this->id);
 
-                $connection->exec($insert);
+                $insert->execute();
             } catch(Exception $e) {
                 throw new Exception($e->getMessage());
             } finally {
@@ -618,7 +632,7 @@
                 $delete->bindParam(':userId', $idAttendee);
                 $delete->bindParam(':eventId', $this->id);
 
-                $connection->exec($delete);
+                $delete->execute();
                 $deleted = true;
             } catch(Exception $e) {
                 throw new Exception($e->getMessage());
@@ -645,7 +659,7 @@
                 $delete->bindParam(':specieId', $idSppecie);
                 $delete->bindParam(':eventId', $this->id);
 
-                $connection->exec($delete);
+                $delete->execute();
                 $deleted = true;
             } catch(Exception $e) {
                 throw new Exception($e->getMessage());
