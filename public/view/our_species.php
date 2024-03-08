@@ -10,7 +10,7 @@ $species = Specie::getSpecies();
     <h1 class="my-4 text-center">Species List</h1>
     <div class="row">
         <?php foreach ($species as $specie) : ?>
-            <div class="col-md-4">
+            <div class="col-md-4 specieCard">
                 <div class="card mb-4">
                     <img class="card-img-top" src="../res/images/species/<?= $specie->getPicture(); ?>" alt="Species Image" style="height: 200px; object-fit: cover;"> <!-- Añadimos estilo aquí -->
                     <div class="card-body">
