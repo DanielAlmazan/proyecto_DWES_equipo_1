@@ -13,11 +13,11 @@
             $avatar = checkAvatar();
             if($avatar != null) {
                 $user = new User(
-                    $_POST['name'],
-                    $_POST['surnames'],
-                    $_POST['email'],
-                    $_POST['nickname'],
-                    $_POST['pass1'],
+                    filterString($_POST['name']),
+                    filterString($_POST['surnames']),
+                    filterString($_POST['email']),
+                    filterString($_POST['nickname']),
+                    filterString($_POST['pass1']),
                     $avatar
                 );
                 $success = $user->insert();
@@ -25,6 +25,11 @@
         }
         
         return $success;
+    }
+
+    // Function to filter a string
+    function filterString(string $value) {
+        return filter_var(trim($value), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     }
 
     // Function for check img uploaded and save it
@@ -87,11 +92,11 @@
             !empty($_POST['email']) &&
             !empty($_POST['nickname'])) {
             
-            $user->setName($_POST['name']);
-            $user->setSurnames($_POST['surnames']);
-            $user->setEmail($_POST['email']);
-            $user->setNickName($_POST['nickname']);
-            $user->setPassword($_POST['pass1']);
+            $user->setName(filterString($_POST['name']));
+            $user->setSurnames(filterString($_POST['surnames']));
+            $user->setEmail(filterString($_POST['email']));
+            $user->setNickName(filterString($_POST['nickname']));
+            $user->setPassword(filterString($_POST['pass1']));
 
             $success = $user->update();
         }
