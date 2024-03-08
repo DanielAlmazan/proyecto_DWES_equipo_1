@@ -1,4 +1,5 @@
 <?php
+    session_start();
     require_once dirname(__DIR__) . '/model/Event.php';
     require_once dirname(__DIR__) . '/model/User.php';
 
@@ -16,6 +17,32 @@
         exit();
     }
 
+    // Method to check if the extension of the file is valid
+    function checkExtension(string $extension): bool
+    {
+        $validTypes = ['jpg', 'jpeg', 'png'];
+        $valid = false;
+
+        foreach ($validTypes as $validType) {
+            if ($validType == $extension) {
+                $valid = true;
+            }
+        }
+
+        return $valid;
+    }
+
+    // Method to get the extension of a file
+    function getExtension(string $fileName): string
+    {
+        $parts = explode('.', $fileName);
+
+        return $parts[count($parts) - 1];
+    }
+
+    /**
+     * Method to save the Banner from an Event
+     */
     function saveBanner(): string {
         $fileName = '';
 
@@ -24,10 +51,11 @@
             $uniqueId = time();
             $fileName = $uniqueId . '-' . $_FILES['bannerPicture']['name'];
 
-            move_uploaded_file($_FILES['bannerPicture']['tmp_name'], $uploadDir . $fileName);
-        } else {
-            header(HOME_PATH);
-            exit();
+            if (!checkExtension(getExtension($fileName))) {
+                $fileName = '';
+            } else {
+                move_uploaded_file($_FILES['bannerPicture']['tmp_name'], $uploadDir . $fileName);
+            }
         }
 
         return $fileName;
@@ -70,8 +98,13 @@
             $type, $hostAux, $bannerPicture
         );
 
-        $eventAux->getAttendees()[] = $hostAux;
+        // Adding the host to the attendees
+        $eventAux->setAttendees([$hostAux]);
+        // Inserting the Event
         $eventAux->insert();
+
+        // Updating the host's karma
+        $hostAux->setKarma($hostAux->getKarma() + 4);
 
         header(HOME_PATH);
         exit();
@@ -86,6 +119,40 @@
 
         $eventAux = Event::getById($_GET['id']);
         $eventAux->delete();
+
+        header(HOME_PATH);
+        exit();
+    }
+
+    function subscribeEvent() {
+        // Checking if there is an ID
+        if (empty($_GET['id']) || !isset($_SESSION['userId'])) {
+            header(HOME_PATH);
+            exit();
+        }
+
+        $eventAux = Event::getById($_GET['id']);
+        $userAux = User::getById($_SESSION['userId']);
+
+        $eventAux->addAttendee($userAux);
+        $userAux->setKarma($userAux->getKarma() + 3);
+
+        header(HOME_PATH);
+        exit();
+    }
+
+    function unsubscribeEvent() {
+        // Checking if there is an ID
+        if (empty($_GET['id']) || !isset($_SESSION['userId'])) {
+            header(HOME_PATH);
+            exit();
+        }
+
+        $eventAux = Event::getById($_GET['id']);
+        $userAux = User::getById($_SESSION['userId']);
+
+        $eventAux->removeAttendee($userAux);
+        $userAux->setKarma($userAux->getKarma() - 3);
 
         header(HOME_PATH);
         exit();
@@ -109,6 +176,12 @@
         case 4:
             // Inserting an Event
             saveEvent();
+            break;
+        case 5:
+            subscribeEvent();
+            break;
+        case 6:
+            unsubscribeEvent();
             break;
         default:
             // Displaying Home page
