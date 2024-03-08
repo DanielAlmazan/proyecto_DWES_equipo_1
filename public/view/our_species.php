@@ -5,19 +5,25 @@ include('header.php');
 $species = Specie::getSpecies();
 ?>
 
-<a href="newSpecie.php" class="btn btn-primary mb-3">New Specie</a>
+<?php if(isset($_SESSION['admin'])) { ?>
+    <a href="newSpecie.php" class="btn btn-primary mb-3">Nueva especie</a>
+<?php } ?>
+
+
 <section class="container">
-    <h1 class="my-4 text-center">Species List</h1>
+    <h1 class="my-4 text-center">Listado de especies</h1>
     <div class="row">
         <?php foreach ($species as $specie) : ?>
             <div class="col-md-4">
                 <div class="card mb-4">
-                    <img class="card-img-top" src="../res/images/species/<?= $specie->getPicture(); ?>" alt="Species Image" style="height: 200px; object-fit: cover;"> <!-- Añadimos estilo aquí -->
+                    <img class="card-img-top" src="../res/images/species/<?= $specie->getPicture(); ?>" alt="Imagen de <?= $specie->getCommonName(); ?>" style="height: 200px; object-fit: cover;">
                     <div class="card-body">
-                        <h5 class="card-title"><?= $specie->getCommonName(); ?></h5>
-                        <p class="card-text">Scientific Name: <?= $specie->getScientificName(); ?></p>
-                        <a href="specieDetail.php?id=<?= $specie->getId(); ?>" class="btn btn-primary">View more</a>
-                        <a href="../controller/SpeciesController.php?action=4&id=<?= $specie->getId(); ?>" class="btn btn-danger">Delete</a>
+                        <h5 class="card-title">Nombre común: <?= $specie->getCommonName(); ?></h5>
+                        <p class="card-text">Nombre científico:  <?= $specie->getScientificName(); ?></p>
+                        <a href="specieDetail.php?id=<?= $specie->getId(); ?>" class="btn btn-primary">Ver</a>
+                        <?php if(isset($_SESSION['admin'])) { ?>
+                        <a href="../controller/SpeciesController.php?action=4&id=<?= $specie->getId(); ?>" class="btn btn-danger">Borrar</a>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
