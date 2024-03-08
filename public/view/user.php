@@ -4,7 +4,13 @@
     require_once("../controller/UserController.php");
 
     if(isset($_SESSION['userId'])) {
-        $user = User::getById($_SESSION['userId']);
+        if(isset($_GET['user']) && intval($_GET['user'])) {
+            $user = User::getById($_GET['user']);
+            $myProfile = false;
+        } else {
+            $user = User::getById($_SESSION['userId']);
+            $myProfile = true;
+        }
     } else {
         // If user's not logged in, we'll redirect to login page
         header("Location: login.php");
@@ -16,15 +22,25 @@
 ?>
 <main>
     <section id="userInfo">
-        <p>NickName: <?= $user->getNickName() ?></p>
-        <p>Karma: <?= $user->getKarma() ?></p>
-        <p>Name: <?= $user->getName() ?></p>
-        <p>Surnames: <?= $user->getSurnames() ?></p>
-        <p>Email: <?= $user->getEmail() ?></p>
-        <p>Avatar: <?= $user->getAvatar() ?></p>
-        <form action="#">
-            <input type="button" value="Edit profile">
-        </form>
+        <?php if($user) { ?>
+            <p><strong>Nickname: </strong><?= $user->getNickName() ?></p>
+            <p><strong>Karma: </strong><?= $user->getKarma() ?> puntos</p>
+            <p><strong>Nombre: </strong><?= $user->getName() ?></p>
+            <p><strong>Apellidos: </strong><?= $user->getSurnames() ?></p>
+            <p><strong>Email: </strong><?= $user->getEmail() ?></p>
+            <p><strong>Avatar:</strong></p>
+            <img src="/res/images/avatars/<?= $user->getAvatar() ?>" alt="Foto perfil">
+            <?php if($myProfile) { ?>
+                <div>
+                    <a class="btn btn-success" role="button" id="registerBtn" href="editProfile.php">Editar perfil</a>
+                </div>
+                <div>
+                    <a class="btn btn-info" role="button" id="registerBtn" href="editProfile.php?changeAvatar=yes">Cambiar avatar</a>
+                </div>
+            <?php } ?>
+        <?php } else { ?>
+            <p>No existe ese usuario</p>
+        <?php } ?>
     </section>
 </main>
 <?php
