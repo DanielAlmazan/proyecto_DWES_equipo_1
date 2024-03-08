@@ -109,8 +109,8 @@ VALUES (1, '¡Reforesta!', '¡Vamos a plantar arbolicos!', 'Alicante', 'Alicante
 INSERT INTO species (scientificName, commonName, climate, region, daysToGrow, benefits, picture, url)
 VALUES ('Cattus', 'Gatoctus', 'Mediterráneo', 'Alicante', 365, 'Madera, corcho, bellotas', 'cattus.jpg',
         'https://es.wikipedia.org/wiki/Quercus_suber'),
-       ('Quercus ilex', 'Encina', 'Mediterráneo', 'Alicante', 365, 'Madera, bellotas', 'encina.jpg',
-        'https://es.wikipedia.org/wiki/Quercus_ilex');
+       ('Quercus robur', 'Roble', 'Mediterráneo', 'Alicante', 365, 'Madera, bellotacas', 'oak.png',
+        'https://es.wikipedia.org/wiki/Roble');
 
 -- USERS IN EVENT --
 INSERT INTO usersInEvent (userId, eventId)

@@ -1,5 +1,36 @@
 <?php
 	session_start();
+    function sanitizeFields()
+    {
+        $name = filter_input(INPUT_POST, trim('name'), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $surnames = filter_input(INPUT_POST, trim('surnames'), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $email = filter_input(INPUT_POST, trim('email'), FILTER_SANITIZE_EMAIL);
+        $subject = filter_input(INPUT_POST, trim('subject'), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $message = filter_input(INPUT_POST, trim('message'), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        
+        return [
+            'name' => $name,
+            'surnames' => $surnames,
+            'email' => $email,
+            'subject' => $subject,
+            'message' => $message
+        ];
+    }
+    
+    if (!empty($_POST['name']) &&
+        !empty($_POST['surnames']) &&
+        !empty($_POST['email']) &&
+        !empty($_POST['subject']) &&
+        !empty($_POST['message'])
+    ) {
+        // We're not using this for anything 🤷‍
+        $fields = sanitizeFields();
+        
+        echo "<div class='alert alert-success'>Mensaje enviado correctamente</div>";
+    } else {
+        echo "<div class='alert alert-danger'>Por favor, rellena todos los campos</div>";
+    }
+    
 	require_once("header.php");
 ?>
 
@@ -10,7 +41,7 @@
        	   <h1>CONTÁCTANOS</h1>
        	   <hr>
        	   <p>¿Quieres preguntarnos algo? Usa nuestro formulario.</p>
-	       <form class="form-horizontal">
+	       <form class="form-horizontal" action="<?= $_SERVER['PHP_SELF'] ?>" method="post">
 	       	  <div class="form-group">
 	       	  	<div class="col-xs-6">
 	       	  	    <label class="label-control">Nombre(s)
