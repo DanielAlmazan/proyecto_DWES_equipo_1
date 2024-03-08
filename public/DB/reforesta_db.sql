@@ -24,7 +24,7 @@ CREATE TABLE users
 CREATE TABLE admins
 (
     id INT PRIMARY KEY,
-    CONSTRAINT fk_admins_users FOREIGN KEY (id) REFERENCES users (id)
+    CONSTRAINT fk_admins_users FOREIGN KEY (id) REFERENCES users (id) ON DELETE CASCADE
 );
 
 CREATE TABLE events
@@ -39,7 +39,7 @@ CREATE TABLE events
     date          DATETIME     NOT NULL,
     bannerPicture VARCHAR(1000),
     type          ENUM ('urbana', 'rural de conservación', 'rural de protección', 'rural de agroforestal', 'rural productiva'),
-    CONSTRAINT fk_events_users FOREIGN KEY (host) REFERENCES users (id)
+    CONSTRAINT fk_events_users FOREIGN KEY (host) REFERENCES users (id) ON DELETE CASCADE
 );
 
 CREATE TABLE species
@@ -60,8 +60,8 @@ CREATE TABLE usersInEvent
     userId  INT,
     eventId INT,
     PRIMARY KEY (userId, eventId),
-    CONSTRAINT fk_usersInEvent_users FOREIGN KEY (userId) REFERENCES users (id),
-    CONSTRAINT fk_usersInEvent_events FOREIGN KEY (eventId) REFERENCES events (id)
+    CONSTRAINT fk_usersInEvent_users FOREIGN KEY (userId) REFERENCES users (id) ON DELETE CASCADE,
+    CONSTRAINT fk_usersInEvent_events FOREIGN KEY (eventId) REFERENCES events (id) ON DELETE CASCADE
 );
 
 CREATE TABLE speciesInEvent
@@ -69,8 +69,8 @@ CREATE TABLE speciesInEvent
     specieId INT,
     eventId  INT,
     PRIMARY KEY (specieId, eventId),
-    CONSTRAINT fk_speciesInEvent_species FOREIGN KEY (specieId) REFERENCES species (id),
-    CONSTRAINT fk_speciesInEvent_events FOREIGN KEY (eventId) REFERENCES events (id)
+    CONSTRAINT fk_speciesInEvent_species FOREIGN KEY (specieId) REFERENCES species (id) ON DELETE CASCADE,
+    CONSTRAINT fk_speciesInEvent_events FOREIGN KEY (eventId) REFERENCES events (id) ON DELETE CASCADE
 );
 
 CREATE TABLE newsletterSubscribers
