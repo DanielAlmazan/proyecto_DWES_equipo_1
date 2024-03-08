@@ -1,8 +1,9 @@
 <?php
-	session_start();
+session_start();
     include('header.php');
-    $species=[];
+$species=[];
 ?>
+<a href="newSpecie.php">Nueva Especie</a>
     <section class="speciesContainer">
         <h1>Summary</h1>
         <?php foreach ($species as $specie) : ?>
