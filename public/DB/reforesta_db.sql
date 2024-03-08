@@ -1,13 +1,13 @@
 CREATE DATABASE IF NOT EXISTS reforestaDB;
 USE reforestaDB;
 
-drop table if exists admins cascade;
-drop table if exists usersInEvent cascade;
-drop table if exists speciesInEvent cascade;
-drop table if exists events cascade;
-drop table if exists users cascade;
-drop table if exists species cascade;
-drop table if exists newsletterSubscribers cascade;
+DROP TABLE IF EXISTS admins CASCADE;
+DROP TABLE IF EXISTS usersInEvent CASCADE;
+DROP TABLE IF EXISTS speciesInEvent CASCADE;
+DROP TABLE IF EXISTS events CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS species CASCADE;
+DROP TABLE IF EXISTS newsletterSubscribers CASCADE;
 
 CREATE TABLE users
 (
@@ -81,10 +81,13 @@ CREATE TABLE newsletterSubscribers
 -- DEFAULT DATA --
 
 -- USERS --
-INSERT INTO users (name, surnames, email, nickname, password, avatar)
-VALUES ('Miguel', 'Collado', 'mig@gmail.com', 'mike', '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4', 'client2.jpg'),
-       ('Lucia', 'Rodriguez', 'luci@gmail.com', 'luciRod', '2fdcbc8615c275ffbe49106cf85fbab1566b92559a251a5535a217f211dfa3f2', 'client1.jpg'),
-       ('Anacletus', 'McJohnson', '1', 'Er AnAkLeTus', '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b', 'analisto.png');
+INSERT INTO users (name, surnames, email, nickname, password, avatar, karma)
+VALUES ('Miguel', 'Collado', 'mig@gmail.com', 'mike',
+        '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4', 'client2.jpg', 7),
+       ('Lucia', 'Rodriguez', 'luci@gmail.com', 'luciRod',
+        '2fdcbc8615c275ffbe49106cf85fbab1566b92559a251a5535a217f211dfa3f2', 'client1.jpg', 4),
+       ('Anacletus', 'McJohnson', '1', 'Er AnAkLeTus',
+        '6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b', 'analisto.png', 0);
 -- DEFAULT PASSWORDS:
 -- Miguel: 1234
 -- Lucia: luci
@@ -97,7 +100,7 @@ VALUES (3);
 -- EVENTS --
 INSERT INTO events (host, name, description, province, locality, terrainType, date, bannerPicture, type)
 VALUES (1, '¡Reforesta!', '¡Vamos a plantar arbolicos!', 'Alicante', 'Alicante', 'Blando',
-        '2022-11-22 12:00:00', '', 'urbana'),
+        '2022-11-22 12:00:00', 'cattus.jpg', 'urbana'),
        (2, 'Menos natación y más reforestación',
         '¿Cansade de ver a gente nadar en la playa? ¡Únete en nuestro evento por la reforestación del mar para que esos autodenominados "healthy" se vayan a nadar a otra parte!',
         'Madrid', 'Madrid', 'Seco', '2023-08-27 00:00:00', '', 'urbana');
