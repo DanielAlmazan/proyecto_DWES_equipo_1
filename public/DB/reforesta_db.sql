@@ -38,7 +38,7 @@ CREATE TABLE events
     terrainType   VARCHAR(255),
     date          DATETIME     NOT NULL,
     bannerPicture VARCHAR(1000),
-    type          ENUM ('urbana', 'rural de conservación', 'rural de protección', 'rural de agroforestal', 'rural productiva'),
+    type          ENUM ('urbana', 'rural_cons', 'rural_prot', 'rural_agro', 'rural_prod'),
     CONSTRAINT fk_events_users FOREIGN KEY (host) REFERENCES users (id) ON DELETE CASCADE
 );
 
@@ -96,11 +96,11 @@ VALUES (3);
 
 -- EVENTS --
 INSERT INTO events (host, name, description, province, locality, terrainType, date, bannerPicture, type)
-VALUES (1, '¡Reforesta!', '¡Vamos a plantar arbolicos!', 'Alicante', 'Alicante', 'rural de protección',
-        '2022-11-22 12:00:00', 'event1.jpg', 'urbana'),
+VALUES (1, '¡Reforesta!', '¡Vamos a plantar arbolicos!', 'Alicante', 'Alicante', 'Blando',
+        '2022-11-22 12:00:00', '', 'urbana'),
        (2, 'Menos natación y más reforestación',
         '¿Cansade de ver a gente nadar en la playa? ¡Únete en nuestro evento por la reforestación del mar para que esos autodenominados "healthy" se vayan a nadar a otra parte!',
-        'Madrid', 'Madrid', 'urbana', '2023-08-27 00:00:00', 'event1.jpg', 'urbana');
+        'Madrid', 'Madrid', 'Seco', '2023-08-27 00:00:00', '', 'urbana');
 
 -- SPECIES --
 INSERT INTO species (scientificName, commonName, climate, region, daysToGrow, benefits, picture, url)
