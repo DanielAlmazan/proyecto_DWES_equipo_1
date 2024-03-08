@@ -5,37 +5,41 @@ require_once dirname(__DIR__) . '/model/Specie.php';
 function uploadImage($picture): string
 {
     $target_dir = dirname(__DIR__) . '/res/images/species/';
-    $target_file = $target_dir . basename($picture["name"]);
+    // Asignamos un id unico para no sobreescribir fotos con el mismo nombre
+    $timestamp = time();
+    $nameFile = $timestamp . "-" . basename($picture["name"]);
+    $target_file = $target_dir . $nameFile;
     $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
-    // Check if the file is an image
+    // Verificar si el archivo es una imagen
     $check = getimagesize($picture["tmp_name"]);
     if ($check === false) {
-        return "File is not an image.";
+        return "El archivo no es una imagen.";
     }
 
-    // Check if file already exists
+    // Verificar si el archivo ya existe
     if (file_exists($target_file)) {
-        return "File already exists.";
+        return "El archivo ya existe.";
     }
 
-    // Check file size
+    // Verificar el tamaño del archivo
     if ($picture["size"] > 500000) {
-        return "File is too large.";
+        return "El archivo es demasiado grande.";
     }
 
-    // Allow certain file formats
+    // Permitir ciertos formatos de archivo
     if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
-        return "Only JPG, JPEG, PNG  files are allowed.";
+        return "Solo se permiten archivos JPG, JPEG, PNG.";
     }
 
-    // Try to upload file
+    // Intentar subir el archivo
     if (move_uploaded_file($picture["tmp_name"], $target_file)) {
-        return $target_file;
+        return $nameFile;
     } else {
-        return "There was an error uploading your file.";
+        return "Hubo un error al subir tu archivo.";
     }
 }
+
 
 function sanitizeInput($input): string
 {
@@ -71,12 +75,16 @@ function updateSpecie()
     $climate = $_POST['climate'];
     $region = $_POST['region'];
     $daysToGrow = $_POST['daysToGrow'];
-    $benefits = $_POST['benefits'];
-    $picture = uploadImage($_FILES['picture']);
+    $benefits = explode(',', $_POST['benefits']);
     $url = $_POST['url'];
 
-
     $specieToUpdate = Specie::getSpecie($id);
+
+    if (isset($_FILES['picture']) && $_FILES['picture']['error'] === UPLOAD_ERR_OK) {
+        $picture = uploadImage($_FILES['picture']);
+    } else {
+        $picture = $specieToUpdate->getPicture(); // Use the existing picture if no new picture is uploaded
+    }
 
     $specieToUpdate->setScientificName($scientificName);
     $specieToUpdate->setCommonName($commonName);
@@ -103,20 +111,21 @@ switch ($action) {
     //add specie
     case "2":
         addSpecie();
-        header('Location:http://' . $_SERVER['SERVER_NAME'] . '/index.php');
+        header('Location:http://' . $_SERVER['SERVER_NAME'] . '/view/our_species.php');
         break;
     //update specie
     case "3":
         updateSpecie();
-        header('Location:http://' . $_SERVER['SERVER_NAME'] . '/index.php');
+        header('Location:http://' . $_SERVER['SERVER_NAME'] . '/view/our_species.php');
         break;
     //delete specie
     case "4":
         deleteSpecie();
-        header('Location:http://' . $_SERVER['SERVER_NAME'] . '/index.php');
+        header('Location:http://' . $_SERVER['SERVER_NAME'] . '/view/our_species.php');
         break;
     //show all species
     default:
         $species = Specie::getSpecies();
         require_once dirname(__DIR__) . '/view/our_species.php';
 }
+?>
