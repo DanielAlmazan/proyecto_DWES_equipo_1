@@ -1,5 +1,17 @@
 <?php
 	session_start();
+    
+    if (!empty($_POST['name']) &&
+        !empty($_POST['surnames']) &&
+        !empty($_POST['email']) &&
+        !empty($_POST['subject']) &&
+        !empty($_POST['message'])
+    ) {
+        echo "<div class='alert alert-success'>Mensaje enviado correctamente</div>";
+    } else {
+        echo "<div class='alert alert-danger'>Por favor, rellena todos los campos</div>";
+    }
+    
 	require_once("header.php");
 ?>
 
@@ -10,7 +22,7 @@
        	   <h1>CONTÁCTANOS</h1>
        	   <hr>
        	   <p>¿Quieres preguntarnos algo? Usa nuestro formulario.</p>
-	       <form class="form-horizontal">
+	       <form class="form-horizontal" action="<?= $_SERVER['PHP_SELF'] ?>" method="post">
 	       	  <div class="form-group">
 	       	  	<div class="col-xs-6">
 	       	  	    <label class="label-control">Nombre(s)
