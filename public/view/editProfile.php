@@ -31,13 +31,13 @@
     require_once("header.php");
 ?>
 
-<div class="container">
+<div class="container userInfo">
     <div class="row">
         <h1>Editar perfil</h1>
     </div>
     <div class="row">
     <?php if(isset($_GET['changeAvatar'])) { ?>
-        <p><strong>Avatar actual:</strong></p>
+        <p><strong>Avatar actual</strong></p>
         <img src="/res/images/avatars/<?= $user->getAvatar() ?>" alt="Foto perfil">
         <form action="<?= $_SERVER['PHP_SELF'] ?>?changeAvatar=yes" method="post" enctype="multipart/form-data">
             <div class="form-group mb-3">
